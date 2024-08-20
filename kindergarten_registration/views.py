@@ -55,7 +55,7 @@ def ogrenci_kayit(request):
     else:
         form = StudentForm()
 
-    return render(request, 'register_student.html', {'form': form})
+    return render(request, 'index.html', {'form': form})
 
 
 def success(request):

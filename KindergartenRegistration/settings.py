@@ -76,9 +76,13 @@ WSGI_APPLICATION = "KindergartenRegistration.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kresdb',  # PostgreSQL veritabanı adı
+        'USER': 'admin_user',   # PostgreSQL kullanıcı adı
+        'PASSWORD': 'parola',      # PostgreSQL kullanıcı şifresi
+        'HOST': 'localhost',       # PostgreSQL sunucusu adresi
+        'PORT': '5432',            # PostgreSQL portu (varsayılan 5432)
     }
 }
 
