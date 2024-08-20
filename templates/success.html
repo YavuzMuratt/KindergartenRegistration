@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-message">
+            <h1>🎉 Registration Successful!</h1>
+            <p>Your registration was completed successfully. Thank you for registering with us!</p>
+            <a href="{% url 'register_student' %}" class="button">Return to Main Page</a>
+        </div>
+    </div>
+</body>
+</html>

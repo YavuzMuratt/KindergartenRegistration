@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Kaydı</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Öğrenci Kaydı</h2>
+        <form method="post" action="{% url 'register_student' %}">
+            {% csrf_token %}
+
+            <!-- Student Information -->
+            <div class="form-section">
+                <h3>Öğrenci Bilgileri</h3>
+                <div class="form-group">
+                    <label for="{{ form.isim.id_for_label }}">Adı</label>
+                    {{ form.isim }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.tc_no.id_for_label }}">Öğrenci ID</label>
+                    {{ form.tc_no }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.adres.id_for_label }}">Adres</label>
+                    {{ form.adres }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.tuvalet_egitimi.id_for_label }}">Tuvalet Eğitimi</label>
+                    {{ form.tuvalet_egitimi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.okul_tecrubesi.id_for_label }}">Okul Tecrübesi</label>
+                    {{ form.okul_tecrubesi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.kardes_sayisi.id_for_label }}">Kardeş Sayısı</label>
+                    {{ form.kardes_sayisi }}
+                </div>
+            </div>
+
+            <!-- Parent 1 Information -->
+            <div class="form-section">
+                <h3>Anne Bilgileri</h3>
+                <div class="form-group">
+                    <label for="{{ form.anne_ismi.id_for_label }}">Adı</label>
+                    {{ form.anne_ismi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_telefon.id_for_label }}">Telefon</label>
+                    {{ form.anne_telefon }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_egitim.id_for_label }}">Eğitim</label>
+                    {{ form.anne_egitim }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_meslek.id_for_label }}">Meslek</label>
+                    {{ form.anne_meslek }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_yasiyor.id_for_label }}">Yaşıyor</label>
+                    {{ form.anne_yasiyor }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_ev_varmi.id_for_label }}">Evi Var mı</label>
+                    {{ form.anne_ev_varmi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_evlimi.id_for_label }}">Evli mi</label>
+                    {{ form.anne_evlimi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.anne_maas.id_for_label }}">Maaş</label>
+                    {{ form.anne_maas }}
+                </div>
+            </div>
+
+            <!-- Parent 2 Information -->
+            <div class="form-section">
+                <h3>Baba Bilgileri</h3>
+                <div class="form-group">
+                    <label for="{{ form.baba_isim.id_for_label }}">Adı</label>
+                    {{ form.baba_isim }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_telefon.id_for_label }}">Telefon</label>
+                    {{ form.baba_telefon }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_egitim.id_for_label }}">Eğitim</label>
+                    {{ form.baba_egitim }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_meslek.id_for_label }}">Meslek</label>
+                    {{ form.baba_meslek }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_yasiyor.id_for_label }}">Yaşıyor</label>
+                    {{ form.baba_yasiyor }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_ev_varmi.id_for_label }}">Evi Var mı</label>
+                    {{ form.baba_ev_varmi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_evlimi.id_for_label }}">Evli mi</label>
+                    {{ form.baba_evlimi }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.baba_maas.id_for_label }}">Maaş</label>
+                    {{ form.baba_maas }}
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Kaydet</button>
+        </form>
+    </div>
+</body>
+</html>

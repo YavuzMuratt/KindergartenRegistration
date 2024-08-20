@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğrenci Atama</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center; /* Center the button horizontally */
+        }
+        .form-container p {
+            text-align: center;
+            font-size: 18px;
+        }
+        button {
+            background: #5cb85c;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #4cae4c;
+        }
+        h2 {
+            color: #333;
+        }
+        .list-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Öğrencileri Anaokullarına Ata</h1>
+
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                <p>Aşağıdaki butona tıklayarak öğrencileri puanlarına göre atayın.</p>
+                <button type="submit">Öğrencileri Ata</button>
+            </form>
+        </div>
+
+        <div class="list-container">
+            <h2>Öğrenciler</h2>
+            <ul>
+                {% for student, points in students_with_points %}
+                    <li>{{ student.isim }} - Puan: {{ points }}</li>
+                {% empty %}
+                    <li>Hiç öğrenci bulunamadı.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="list-container">
+            <h2>Anaokulları</h2>
+            <ul>
+                {% for kindergarten in kindergartens %}
+                    <li>{{ kindergarten.kres_ismi }} - Mevcut Öğrenciler: {{ kindergarten.student_count }}</li>
+                {% empty %}
+                    <li>Hiç anaokulu bulunamadı.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
