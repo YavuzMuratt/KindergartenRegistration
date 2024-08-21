@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ogrenci, Kres
+from .models import Ogrenci, Kres, Sınıf
 
 """
 admin.site.register(Student)
@@ -51,3 +51,4 @@ class StudentAdmin(admin.ModelAdmin):
 
 admin.site.register(Kres, KindergartenAdmin)
 admin.site.register(Ogrenci, StudentAdmin)
+admin.site.register(Sınıf)

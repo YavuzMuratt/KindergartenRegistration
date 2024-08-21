@@ -9,7 +9,7 @@ from .models import Ogrenci, Kres
 
 @staff_member_required
 def atama(request):
-    students = Ogrenci.objects.filter(tuvalet_egitimi=True)
+    students = Ogrenci.objects.filter(tuvalet_egitimi=True, elendi=False)
 
     students_with_points = []
     for student in students:
@@ -17,26 +17,29 @@ def atama(request):
         if points != "Elendi":
             students_with_points.append((student, points))
 
-    # Sort students by points in descending order
     students_with_points.sort(key=lambda x: x[1], reverse=True)
-
     kindergartens = Kres.objects.all()
 
     if request.method == 'POST':
         for student, _ in students_with_points:
+            yas = student.yas()
+            ilk_yari = student.dogum_tarihi.month <= 6
             assigned = False
 
-            # Check if the student has a preferred kindergarten
-            if student.tercih_edilen_okul and student.tercih_edilen_okul.bosluk_varmi():
-                student.kres = student.tercih_edilen_okul
-                student.save()
-                assigned = True
+            if student.tercih_edilen_okul:
+                sinif = student.tercih_edilen_okul.kres_siniflar.filter(yas_grubu=yas, ilk_yari=ilk_yari).first()
+                if sinif and sinif.bosluk_varmi():
+                    student.kres = student.tercih_edilen_okul
+                    student.sinif = sinif
+                    student.save()
+                    assigned = True
 
-            # If not assigned or no preferred kindergarten, assign to any available kindergarten
             if not assigned:
                 for kindergarten in kindergartens:
-                    if kindergarten.bosluk_varmi():
+                    sinif = kindergarten.kres_siniflar.filter(yas_grubu=yas, ilk_yari=ilk_yari).first()
+                    if sinif and sinif.bosluk_varmi():
                         student.kres = kindergarten
+                        student.sinif = sinif
                         student.save()
                         break
 
@@ -44,7 +47,14 @@ def atama(request):
 
     context = {
         'students_with_points': students_with_points,
-        'kindergartens': kindergartens
+        'kindergartens': kindergartens,
+    }
+    return render(request, 'assignment.html', context)
+
+    context = {
+        'students_with_points': students_with_points,
+        'kindergartens': kindergartens,
+        'elenenler': elenenler
     }
     return render(request, 'assignment.html', context)
 
