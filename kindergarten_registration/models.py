@@ -6,6 +6,9 @@ class Kres(models.Model):
     sinif_basi_ogrenci = models.IntegerField(default=10)
     toplam_ogrenci_limit = models.IntegerField(default=50)
 
+    def bosluk_varmi(self):
+        return self.student_count < (self.siniflar * self.sinif_basi_ogrenci)
+
     def __str__(self):
         return self.kres_ismi
 
@@ -28,6 +31,7 @@ class Ogrenci(models.Model):
     okul_tecrubesi = models.CharField(max_length=10, choices=OKUL_TIPLERI, default='None', blank=True)
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
     kardes_sayisi = models.IntegerField(default=0, blank=True)
+    tercih_edilen_okul = models.ForeignKey(Kres, on_delete=models.SET_NULL, null=True, blank=True)
 
     # Parent 1 Info
     anne_ismi = models.CharField(max_length=100, blank=True)

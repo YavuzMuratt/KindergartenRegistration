@@ -14,21 +14,31 @@ def atama(request):
     students_with_points = []
     for student in students:
         points = student.calculate_points()
-        if points != "Disqualified":
+        if points != "Elendi":
             students_with_points.append((student, points))
 
+    # Sort students by points in descending order
     students_with_points.sort(key=lambda x: x[1], reverse=True)
 
     kindergartens = Kres.objects.all()
 
     if request.method == 'POST':
-        for kindergarten in kindergartens:
-            available_slots = kindergarten.toplam_ogrenci_limit - kindergarten.student_count
-            for _ in range(min(available_slots, kindergarten.sinif_basi_ogrenci)):
-                if students_with_points:
-                    student, _ = students_with_points.pop(0)
-                    student.kres = kindergarten
-                    student.save()
+        for student, _ in students_with_points:
+            assigned = False
+
+            # Check if the student has a preferred kindergarten
+            if student.tercih_edilen_okul and student.tercih_edilen_okul.bosluk_varmi():
+                student.kres = student.tercih_edilen_okul
+                student.save()
+                assigned = True
+
+            # If not assigned or no preferred kindergarten, assign to any available kindergarten
+            if not assigned:
+                for kindergarten in kindergartens:
+                    if kindergarten.bosluk_varmi():
+                        student.kres = kindergarten
+                        student.save()
+                        break
 
         return redirect('atama')
 

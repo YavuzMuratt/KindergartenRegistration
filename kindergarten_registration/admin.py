@@ -16,6 +16,7 @@ class StudentInline(admin.StackedInline):
     extra = 0  # Number of empty forms to display
     fields = ('isim', 'tc_no', 'kres', 'points_display')  # List fields in desired order
     readonly_fields = ('points_display',)  # Make points_display read-only
+    fk_name = 'kres'
 
     def points_display(self, obj):
         return obj.calculate_points()
@@ -23,7 +24,7 @@ class StudentInline(admin.StackedInline):
 
 
 class KindergartenAdmin(admin.ModelAdmin):
-    list_display = ('kres_ismi', 'siniflar', 'student_count')  # Adjust as needed
+    list_display = ('kres_ismi', 'siniflar', 'sinif_basi_ogrenci', 'student_count')  # Adjust as needed
     inlines = [StudentInline]
 
     def get_queryset(self, request):

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ogrenci
+from .models import Ogrenci, Kres
 
 
 class StudentForm(forms.ModelForm):
@@ -10,6 +10,12 @@ class StudentForm(forms.ModelForm):
     ]
 
     okul_tecrubesi = forms.ChoiceField(choices=OKUL_TIPLERI, required=False, widget=forms.Select())
+
+    preferred_kindergarten = forms.ModelChoiceField(
+        queryset=Kres.objects.all(),
+        required=False,
+        label="Tercih Edilen Anaokulu"
+    )
 
     class Meta:
         model = Ogrenci
