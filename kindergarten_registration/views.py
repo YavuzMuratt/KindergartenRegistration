@@ -3,6 +3,8 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+
 from .forms import StudentForm
 from .models import Ogrenci, Kres
 
@@ -38,7 +40,11 @@ def atama(request):
     }
     return render(request, 'assignment.html', context)
 
+def show_kres(request):
+    kresler = Kres.objects.all()  # Kres modelindeki tüm kayıtları al
+    return render(request, 'index.html', {'kresler': kresler})
 
+@csrf_exempt
 def ogrenci_kayit(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)

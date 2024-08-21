@@ -23,7 +23,7 @@ from kindergarten_registration.views import atama
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.ogrenci_kayit, name='register_student'),  # Root URL shows the registration form
+    path('', views.ogrenci_kayit, name='index'),  # Root URL shows the registration form
     path('success/', views.success, name='success'),  # Success page after registration
     path('assignment/', atama, name='atama'),
 ]
