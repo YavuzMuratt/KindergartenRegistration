@@ -75,15 +75,13 @@ class Ogrenci(models.Model):
         if not self.anne_ev_varmi or not self.baba_ev_varmi:
             points += 5
         total_salary = (self.anne_maas or 0) + (self.baba_maas or 0)
-        if total_salary < 20000:
-            points -= 20
-        elif 20000 <= total_salary < 30000:
-            points -= 15
-        elif 30000 <= total_salary < 40000:
-            points -= 10
-        elif 40000 <= total_salary < 50000:
-            points -= 5
-        elif total_salary >= 50000:
+        if total_salary < 18000:
+            points += 20
+        elif 20000 <= total_salary < 35000:
+            points += 15
+        elif 30000 <= total_salary < 53000:
+            points += 10
+        elif 40000 <= total_salary < 67000:
             points += 5
 
         points += self.kardes_sayisi
