@@ -1,6 +1,5 @@
-from datetime import timezone
-
 from django import forms
+from .models import Ogrenci, Kres, Sınıf
 from .models import Ogrenci, Kres
 from django.core.exceptions import ValidationError
 
@@ -57,6 +56,7 @@ class StudentForm(forms.ModelForm):
             'baba_maas'
         ]
         widgets = {
+            'dogum_tarihi': forms.DateInput(attrs={'type': 'date'}),
             'devlet_ozel': forms.Select(choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')]),
             'tuvalet_egitimi': forms.CheckboxInput(),
             'okul_tecrubesi': forms.Select(),
@@ -105,3 +105,17 @@ class StudentForm(forms.ModelForm):
             'baba_ev_varmi': 'Baba kendi evi var mı?',
             'baba_evlimi': 'Baba evli mi?',
         }
+
+
+class SınıfAdminForm(forms.ModelForm):
+    class Meta:
+        model = Sınıf
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Restrict students to those in the same Kres
+        if self.instance and self.instance.kres:
+            self.fields['students'].queryset = Ogrenci.objects.filter(kres=self.instance.kres)
+        else:
+            self.fields['students'].queryset = Ogrenci.objects.none()

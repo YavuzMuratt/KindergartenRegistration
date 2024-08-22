@@ -13,6 +13,7 @@ from .models import Ogrenci, Kres
 @staff_member_required
 def atama(request):
     students = Ogrenci.objects.filter(tuvalet_egitimi=True, elendi=False)
+    reserve_list = []
 
     students_with_points = []
     for student in students:
@@ -44,20 +45,23 @@ def atama(request):
                         student.kres = kindergarten
                         student.sinif = sinif
                         student.save()
+                        assigned = True
                         break
+
+            if not assigned:
+                reserve_list.append(student)
+
+        # Save reserve list
+        for student in reserve_list:
+            student.yedekte = True
+            student.save()
 
         return redirect('atama')
 
     context = {
         'students_with_points': students_with_points,
         'kindergartens': kindergartens,
-    }
-    return render(request, 'assignment.html', context)
-
-    context = {
-        'students_with_points': students_with_points,
-        'kindergartens': kindergartens,
-        'elenenler': elenenler
+        'reserve_list': reserve_list,
     }
     return render(request, 'assignment.html', context)
 
