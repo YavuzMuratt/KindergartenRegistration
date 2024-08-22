@@ -5,10 +5,10 @@ from .forms import SınıfAdminForm  # Import the custom form for Sınıf
 
 class StudentInline(admin.StackedInline):
     model = Ogrenci
-    extra = 0  # Number of empty forms to display
-    fields = ('isim', 'tc_no', 'kres', 'points_display')  # List fields in desired order
-    readonly_fields = ('points_display',)  # Make points_display read-only
+    extra = 0
     fk_name = 'kres'
+    fields = ('isim', 'tc_no', 'kres', 'points_display')  # Ya da tercih_edilen_okul
+    readonly_fields = ('points_display',)
 
     def points_display(self, obj):
         return obj.calculate_points()
@@ -34,8 +34,8 @@ class KindergartenAdmin(admin.ModelAdmin):
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('isim', 'tc_no', 'kres', 'adres', 'points_display')
-    list_filter = ('kres',)  # Allow filtering by kindergarten
-    search_fields = ('isim', 'tc_no', 'adres')  # Add search functionality
+    list_filter = ('kres',)  # Ya da tercih_edilen_okul
+    search_fields = ('isim', 'tc_no', 'adres')
 
     def points_display(self, obj):
         return obj.calculate_points()

@@ -30,12 +30,12 @@ class Ogrenci(models.Model):
 
     sinif = models.ForeignKey('Sınıf', related_name='sınıf_students', on_delete=models.SET_NULL, null=True, blank=True)
     elendi = models.BooleanField(default=False)
-    dogum_tarihi = models.DateField(default=timezone.now)
+
     isim = models.CharField(max_length=100)
     tc_no = models.CharField(max_length=11)
     adres = models.CharField(max_length=255)
-    kayıt_tarihi = models.DateTimeField(auto_now_add=True, null=True)
-    dogum_tarihi = models.DateTimeField(default=timezone.now)
+    dogum_tarihi = models.DateField(default=timezone.now)
+    kayıt_tarihi = models.DateTimeField(auto_now_add=True)
     tuvalet_egitimi = models.BooleanField(default=False)
     okul_tecrubesi = models.CharField(max_length=10, choices=OKUL_TIPLERI, default='None', blank=True)
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
@@ -87,6 +87,7 @@ class Ogrenci(models.Model):
             points += 5
         if not self.tuvalet_egitimi:
             self.elendi = True
+            self.save()
             return "Elendi"
         if self.okul_tecrubesi == 'Devlet':
             points += 5
