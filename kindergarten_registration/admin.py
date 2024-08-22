@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Ogrenci, Kres, Sınıf
+from .forms import SınıfAdminForm  # Import the custom form for Sınıf
 
 
 class StudentInline(admin.StackedInline):
@@ -11,6 +12,7 @@ class StudentInline(admin.StackedInline):
 
     def points_display(self, obj):
         return obj.calculate_points()
+
     points_display.short_description = 'Points'
 
 
@@ -37,12 +39,23 @@ class StudentAdmin(admin.ModelAdmin):
 
     def points_display(self, obj):
         return obj.calculate_points()
+
     points_display.short_description = 'Points'
 
 
+class OgrenciInline(admin.TabularInline):
+    model = Sınıf.students.through
+    extra = 0
+    can_delete = True
+    verbose_name = 'Student'
+    verbose_name_plural = 'Students'
+
+
 class SınıfAdmin(admin.ModelAdmin):
-    list_display = ('isim', 'kres', 'yas_grubu', 'ilk_yari', 'student_count')
+    #form = SınıfAdminForm
+    list_display = ('isim', 'kres', 'student_count')
     filter_horizontal = ('students',)
+    inlines = [OgrenciInline]
 
     def student_count(self, obj):
         return obj.students.count()
@@ -52,4 +65,4 @@ class SınıfAdmin(admin.ModelAdmin):
 
 admin.site.register(Kres, KindergartenAdmin)
 admin.site.register(Ogrenci, StudentAdmin)
-admin.site.register(Sınıf)
+admin.site.register(Sınıf, SınıfAdmin)

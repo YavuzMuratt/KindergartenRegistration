@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ogrenci, Kres
+from .models import Ogrenci, Kres, Sınıf
 
 
 class StudentForm(forms.ModelForm):
@@ -77,3 +77,17 @@ class StudentForm(forms.ModelForm):
             'baba_ev_varmi': 'Baba kendi evi var mı?',
             'baba_evlimi': 'Baba evli mi?',
         }
+
+
+class SınıfAdminForm(forms.ModelForm):
+    class Meta:
+        model = Sınıf
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Restrict students to those in the same Kres
+        if self.instance and self.instance.kres:
+            self.fields['students'].queryset = Ogrenci.objects.filter(kres=self.instance.kres)
+        else:
+            self.fields['students'].queryset = Ogrenci.objects.none()

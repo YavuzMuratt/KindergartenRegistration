@@ -27,9 +27,8 @@ class Ogrenci(models.Model):
         ('Özel', 'Özel'),
     ]
 
-    siniflar = models.ManyToManyField('Sınıf', related_name='ogrenci_siniflar', blank=True)
+    sinif = models.ForeignKey('Sınıf', related_name='sınıf_students', on_delete=models.SET_NULL, null=True, blank=True)
     elendi = models.BooleanField(default=False)
-    # Student Information
     dogum_tarihi = models.DateField(default=timezone.now)
     isim = models.CharField(max_length=100)
     tc_no = models.CharField(max_length=11)
@@ -118,7 +117,7 @@ class Sınıf(models.Model):
     kres = models.ForeignKey('Kres', related_name='kres_siniflar', on_delete=models.CASCADE)
     yas_grubu = models.IntegerField()
     ilk_yari = models.BooleanField(default=True)
-    students = models.ManyToManyField('Ogrenci', related_name='sınıf_ogrenciler', blank=True)
+    students = models.ManyToManyField('Ogrenci', related_name='sinif_students', blank=True)
 
     def bosluk_varmi(self):
         return self.students.count() < self.kres.toplam_ogrenci_limit / 5
@@ -155,4 +154,4 @@ def create_siniflar_for_kres(sender, instance, created, **kwargs):
                     kres=instance,
                     yas_grubu=yas,
                     ilk_yari=False
-                )
+               )
