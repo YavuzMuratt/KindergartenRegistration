@@ -1,4 +1,7 @@
+from datetime import timezone
+
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import Ogrenci, Kres
 
 
@@ -8,17 +11,43 @@ class StudentForm(forms.ModelForm):
         ('Devlet', 'Devlet'),
         ('Özel', 'Özel'),
     ]
-
+    KURUMLAR = [
+        ('None', 'Seçiniz'),
+        ('Atakum Belediyesi', 'Atakum Belediyesi'),
+        ('Diğer', 'Diğer'),
+    ]
+    anne_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
+    baba_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
+    diger_kurum = forms.CharField(required=False)
     okul_tecrubesi = forms.ChoiceField(choices=OKUL_TIPLERI, required=False, widget=forms.Select())
+
+    preferred_kindergarten = forms.ModelChoiceField(
+        queryset=Kres.objects.all(),
+        required=False,
+        label="Tercih Edilen Anaokulu"
+    )
+
     kres = forms.ModelChoiceField(queryset=Kres.objects.all(), required=True, widget=forms.Select())
+    dogum_tarihi = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True)
+    def clean(self):
+        cleaned_data = super().clean()
+        kurum = cleaned_data.get('kurum')
+        diger_kurum = cleaned_data.get('diger_kurum')
+
+
+        if kurum == 'Diğer' and not diger_kurum:
+            raise ValidationError("Diğer Kurum'u seçtiyseniz, lütfen alanı doldurunuz.")
+
+        return cleaned_data
+
     class Meta:
         model = Ogrenci
         fields = [
             'isim', 'tc_no', 'adres', 'tuvalet_egitimi', 'okul_tecrubesi', 'devlet_ozel',
-            'kardes_sayisi',
+            'kardes_sayisi', 'dogum_tarihi',
             'anne_ismi', 'anne_telefon', 'anne_egitim', 'anne_meslek', 'anne_yasiyor',
             'anne_ev_varmi', 'anne_evlimi', 'anne_maas', 'baba_isim', 'baba_telefon',
-            'baba_egitim', 'baba_meslek', 'baba_yasiyor', 'baba_ev_varmi', 'baba_evlimi',
+            'baba_egitim', 'baba_meslek','baba_kurum', 'baba_yasiyor', 'baba_ev_varmi', 'baba_evlimi',
             'baba_maas'
         ]
         widgets = {

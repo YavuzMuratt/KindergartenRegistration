@@ -1,4 +1,5 @@
 # views.py
+from datetime import datetime
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
@@ -47,6 +48,12 @@ def show_kres(request):
 @csrf_exempt
 def ogrenci_kayit(request):
     if request.method == 'POST':
+        day = request.POST.get('day')
+        month = request.POST.get('month')
+        year = request.POST.get('year')
+
+        dogum_tarihi_str = f"{year}-{month}-{day}"
+        dogum_tarihi = datetime.strptime(dogum_tarihi_str, "%Y-%m-%d").date()
         form = StudentForm(request.POST)
         if form.is_valid():
             student = form.save()
