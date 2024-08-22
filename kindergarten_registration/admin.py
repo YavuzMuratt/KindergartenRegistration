@@ -1,15 +1,6 @@
 from django.contrib import admin
 from .models import Ogrenci, Kres, Sınıf
 
-"""
-admin.site.register(Student)
-
-
-@admin.register(Kindergarten)
-class KindergartenAdmin(admin.ModelAdmin):
-    list_display = ('name', 'branches', 'student_limit_per_class', 'total_student_limit', 'student_count')
-    """
-
 
 class StudentInline(admin.StackedInline):
     model = Ogrenci
@@ -47,6 +38,16 @@ class StudentAdmin(admin.ModelAdmin):
     def points_display(self, obj):
         return obj.calculate_points()
     points_display.short_description = 'Points'
+
+
+class SınıfAdmin(admin.ModelAdmin):
+    list_display = ('isim', 'kres', 'yas_grubu', 'ilk_yari', 'student_count')
+    filter_horizontal = ('students',)
+
+    def student_count(self, obj):
+        return obj.students.count()
+
+    student_count.short_description = 'Student Count'
 
 
 admin.site.register(Kres, KindergartenAdmin)

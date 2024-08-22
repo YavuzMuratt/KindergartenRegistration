@@ -28,6 +28,7 @@ class StudentForm(forms.ModelForm):
             'baba_maas'
         ]
         widgets = {
+            'dogum_tarihi': forms.DateInput(attrs={'type': 'date'}),
             'devlet_ozel': forms.Select(choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')]),
             'tuvalet_egitimi': forms.CheckboxInput(),
             'okul_tecrubesi': forms.Select(),
