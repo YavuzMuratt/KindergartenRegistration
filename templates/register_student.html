@@ -22,12 +22,20 @@
                     {{ form.isim }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.tc_no.id_for_label }}">Öğrenci ID</label>
+                    <label for="{{ form.tc_no.id_for_label }}">TC No</label>
                     {{ form.tc_no }}
+                </div>
+                <div class="form-group">
+                    <label for="id_dogum_tarihi">Doğum Tarihi:</label>
+                    <input type="date" name="dogum_tarihi" id="id_dogum_tarihi" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="{{ form.adres.id_for_label }}">Adres</label>
                     {{ form.adres }}
+                </div>
+                <div class="form-group">
+                <label for="kres_preference">Anaokulu Tercihi:</label>
+                    {{ form.preferred_kindergarten }}
                 </div>
                 <div class="form-group">
                     <label for="{{ form.tuvalet_egitimi.id_for_label }}">Tuvalet Eğitimi</label>

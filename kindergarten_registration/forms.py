@@ -1,8 +1,8 @@
 from datetime import timezone
 
 from django import forms
-from django.core.exceptions import ValidationError
 from .models import Ogrenci, Kres
+from django.core.exceptions import ValidationError
 
 
 class StudentForm(forms.ModelForm):
@@ -20,6 +20,12 @@ class StudentForm(forms.ModelForm):
     baba_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
     diger_kurum = forms.CharField(required=False)
     okul_tecrubesi = forms.ChoiceField(choices=OKUL_TIPLERI, required=False, widget=forms.Select())
+
+    preferred_kindergarten = forms.ModelChoiceField(
+        queryset=Kres.objects.all(),
+        required=False,
+        label="Tercih Edilen Anaokulu"
+    )
 
     preferred_kindergarten = forms.ModelChoiceField(
         queryset=Kres.objects.all(),

@@ -24,7 +24,7 @@
             text-align: center;
         }
         .form-container {
-            background: #fff;
+            background: #cf7418;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@
             font-size: 18px;
         }
         button {
-            background: #5cb85c;
+            background: #091eb1;
             border: none;
             color: #fff;
             padding: 10px 20px;
@@ -56,10 +56,10 @@
             color: #333;
         }
         .list-container {
-            background: #fff;
+            background: #cf7418;
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(129, 76, 76, 0.1);
             margin-bottom: 20px;
         }
         ul {
@@ -68,7 +68,7 @@
         }
         li {
             padding: 8px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #cf7418;
         }
         li:last-child {
             border-bottom: none;
@@ -105,6 +105,17 @@
                     <li>{{ kindergarten.kres_ismi }} - Mevcut Öğrenciler: {{ kindergarten.student_count }}</li>
                 {% empty %}
                     <li>Hiç anaokulu bulunamadı.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    
+        <div class="list-container">
+            <h2>Elenen Öğrenciler</h2>
+            <ul>
+                {% for student in disqualified_students %}
+                    <li>{{ student.isim }} - Neden: {{ student.disqualification_reason }}</li>
+                {% empty %}
+                    <li>Elendi öğrenci bulunamadı.</li>
                 {% endfor %}
             </ul>
         </div>
