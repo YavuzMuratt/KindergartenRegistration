@@ -52,7 +52,7 @@ class StudentForm(forms.ModelForm):
             'kardes_sayisi', 'dogum_tarihi',
             'anne_ismi', 'anne_telefon', 'anne_egitim', 'anne_meslek', 'anne_yasiyor',
             'anne_ev_varmi', 'anne_evlimi', 'anne_maas', 'baba_isim', 'baba_telefon',
-            'baba_egitim', 'baba_meslek','baba_kurum', 'baba_yasiyor', 'baba_ev_varmi', 'baba_evlimi',
+            'baba_egitim', 'baba_meslek', 'baba_yasiyor', 'baba_ev_varmi', 'baba_evlimi',
             'baba_maas'
         ]
         widgets = {

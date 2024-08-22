@@ -35,7 +35,7 @@ class Ogrenci(models.Model):
     tc_no = models.CharField(max_length=11)
     adres = models.CharField(max_length=255)
     dogum_tarihi = models.DateField(default=timezone.now)
-    kayıt_tarihi = models.DateTimeField(auto_now_add=True)
+    kayıt_tarihi = models.DateTimeField(default=timezone.now)
     tuvalet_egitimi = models.BooleanField(default=False)
     okul_tecrubesi = models.CharField(max_length=10, choices=OKUL_TIPLERI, default='None', blank=True)
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
