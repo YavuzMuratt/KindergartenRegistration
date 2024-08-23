@@ -1,6 +1,5 @@
 from django import forms
 from .models import Ogrenci, Kres, Sınıf
-from .models import Ogrenci, Kres
 from django.core.exceptions import ValidationError
 
 
@@ -15,9 +14,9 @@ class StudentForm(forms.ModelForm):
         ('Atakum Belediyesi', 'Atakum Belediyesi'),
         ('Diğer', 'Diğer'),
     ]
-    anne_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
-    baba_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
-    diger_kurum = forms.CharField(required=False)
+    #anne_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
+    #baba_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
+    #diger_kurum = forms.CharField(required=False)
     okul_tecrubesi = forms.ChoiceField(choices=OKUL_TIPLERI, required=False, widget=forms.Select())
 
     preferred_kindergarten = forms.ModelChoiceField(
@@ -33,7 +32,6 @@ class StudentForm(forms.ModelForm):
     )
 
     kres = forms.ModelChoiceField(queryset=Kres.objects.all(), required=True, widget=forms.Select())
-    dogum_tarihi = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True)
     def clean(self):
         cleaned_data = super().clean()
         kurum = cleaned_data.get('kurum')
@@ -48,12 +46,12 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Ogrenci
         fields = [
-            'isim', 'tc_no', 'adres', 'tuvalet_egitimi', 'okul_tecrubesi', 'devlet_ozel',
+            'isim', 'soyisim', 'tc_no', 'adres', 'tuvalet_egitimi', 'okul_tecrubesi', 'devlet_ozel',
             'kardes_sayisi', 'dogum_tarihi',
-            'anne_ismi', 'anne_telefon', 'anne_egitim', 'anne_meslek', 'anne_yasiyor',
-            'anne_ev_varmi', 'anne_evlimi', 'anne_maas', 'baba_isim', 'baba_telefon',
-            'baba_egitim', 'baba_meslek', 'baba_yasiyor', 'baba_ev_varmi', 'baba_evlimi',
-            'baba_maas'
+            'anne_isim', 'anne_soyisim', 'anne_telefon', 'anne_egitim', 'anne_meslek','anne_kurum', 'anne_yasiyor',
+            'anne_oz', 'anne_maas', 'baba_isim', 'baba_soyisim', 'baba_telefon',
+            'baba_egitim', 'baba_meslek', 'baba_kurum', 'baba_yasiyor', 'baba_oz',
+            'baba_maas', 'evlimi', 'ev_varmi'
         ]
         widgets = {
             'dogum_tarihi': forms.DateInput(attrs={'type': 'date'}),
@@ -61,11 +59,9 @@ class StudentForm(forms.ModelForm):
             'tuvalet_egitimi': forms.CheckboxInput(),
             'okul_tecrubesi': forms.Select(),
             'anne_yasiyor': forms.CheckboxInput(),
-            'anne_ev_varmi': forms.CheckboxInput(),
-            'anne_evlimi': forms.CheckboxInput(),
             'baba_yasiyor': forms.CheckboxInput(),
-            'baba_ev_varmi': forms.CheckboxInput(),
-            'baba_evlimi': forms.CheckboxInput(),
+            'evlimi': forms.Select(),
+            'ev_varmi': forms.Select(),
             'kardes_sayisi': forms.NumberInput(attrs={'class': 'input', 'min': 0}),
         }
         labels = {
@@ -80,18 +76,19 @@ class StudentForm(forms.ModelForm):
             'anne_telefon': 'Anne Telefonu',
             'anne_egitim': 'Anne Eğitimi',
             'anne_meslek': 'Anne Mesleği',
+            'anne_kurum': 'Anne Kurum',
             'anne_yasiyor': 'Anne Yaşıyor',
-            'anne_ev_varmi': 'Anne Evi Var mı',
-            'anne_evlimi': 'Anne Evli mi',
             'anne_maas': 'Anne Maaşı',
             'baba_isim': 'Baba Adı',
             'baba_telefon': 'Baba Telefonu',
             'baba_egitim': 'Baba Eğitimi',
             'baba_meslek': 'Baba Mesleği',
+            'baba_kurum': 'Baba Kurum',
             'baba_yasiyor': 'Baba Yaşıyor',
+            'baba_oz': 'Baba Oz',
             'baba_ev_varmi': 'Baba Evi Var mı',
-            'baba_evlimi': 'Baba Evli mi',
-            'baba_maas': 'Baba Maaşı',
+            'evlimi': 'Anne Baba Evli mi',
+            'ev_varmi': 'Ev Sahibi misiniz?',
         }
         help_texts = {
             'tuvalet_egitimi': 'Tuvalet eğitimi almış mı?',

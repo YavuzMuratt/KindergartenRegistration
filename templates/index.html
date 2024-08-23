@@ -44,22 +44,21 @@
                        oninput="this.value=this.value.replace(/[^0-9]/g,'');">
             </div>
 
-                        <div class="form-group">
-                <label for="doğum_tarihi">Doğum Tarihi:</label>
+            <div class="form-group">
+                {{ form.dogum_tarihi }}
+                <label for="day">Doğum Tarihi:</label>
                 <div class="date-group">
                     <select id="day" name="day" required>
                         <option value="" selected>Gün</option>
-                        
                         <script>
                             for (let i = 1; i <= 31; i++) {
                                 document.write('<option value="' + i + '">' + i + '</option>');
                             }
                         </script>
                     </select>
-
+            
                     <select id="month" name="month" required>
                         <option value="" disabled selected>Ay</option>
-                        
                         <option value="01">Ocak</option>
                         <option value="02">Şubat</option>
                         <option value="03">Mart</option>
@@ -73,10 +72,9 @@
                         <option value="11">Kasım</option>
                         <option value="12">Aralık</option>
                     </select>
-
+            
                     <select id="year" name="year" required>
                         <option value="" disabled selected>Yıl</option>
-                       
                         <script>
                             let currentYear = new Date().getFullYear();
                             for (let i = currentYear; i >= 1900; i--) {
@@ -86,6 +84,7 @@
                     </select>
                 </div>
             </div>
+
             
             <div class="form-group">
                 <label for="adres">Adres:</label>
@@ -96,9 +95,9 @@
                 <label>Öğrencinin tuvalet eğitimi</label>
                 <div class="radio-group">
                     <input type="radio" id="tuvaletEgitimiYes" name="tuvalet_egitimi" value="True" required>
-                    <label for="tuvaletEgitimiYes">Var</label>
+                    <label for="tuvalet_egitimi">Var</label>
                     <input type="radio" id="tuvaletEgitimiNo" name="tuvalet_egitimi" value="False" required>
-                    <label for="tuvaletEgitimiNo">Bez Kullanıyor <span class="warning">(Bez kullanan öğrencilerin başvurusu geçerli değildir)</span></label>
+                    <label for="tuvalet_egitimi">Bez Kullanıyor <span class="warning">(Bez kullanan öğrencilerin başvurusu geçerli değildir)</span></label>
                 </div>
             </div>
 
@@ -106,9 +105,9 @@
                 <label>Okul deneyimi var mı?</label>
                 <div class="radio-group">
                     <input type="radio" id="okulEvet" name="okul_tecrubesi" value="Devlet" required>
-                    <label for="okulEvet">Var</label>
+                    <label for="okul_tecrubesi">Var</label>
                     <input type="radio" id="okulHayir" name="okul_tecrubesi" value="None" required>
-                    <label for="okulHayir">Yok</label>
+                    <label for="okul_tecrubesi">Yok</label>
                 </div>
             </div>
 
@@ -116,9 +115,9 @@
                 <label>Varsa devlet ya da özel mi?</label>
                 <div class="radio-group">
                     <input type="radio" id="devlet" name="devlet_ozel" value="Devlet" required>
-                    <label for="devlet">Devlet</label>
+                    <label for="devlet_ozel">Devlet</label>
                     <input type="radio" id="ozel" name="devlet_ozel" value="Özel" required>
-                    <label for="ozel">Özel</label>
+                    <label for="devlet_ozel">Özel</label>
                 </div>
             </div>
 
@@ -136,7 +135,7 @@
             </div>
 
             <div class="form-group">
-                <label for="anne_soyisim">Soyad:</label>
+                <label for="anne_soyismi">Soyad:</label>
                 <input type="text" id="anne_soyisim" name="anne_soyisim" placeholder="Soyadınızı giriniz" required>
             </div>
 
@@ -156,14 +155,19 @@
                 <label for="anne_meslek">Mesleği:</label>
                 <input type="text" id="anne_meslek" name="anne_meslek" placeholder="Mesleğinizi giriniz" required>
             </div>
+            
+            <div class="form-group">
+                <label for="anne_kurum">Kurum:</label>
+                <input type="text" id="anne_kurum" name="anne_kurum" placeholder="Kurumunuzu giriniz" required>
+            </div>
 
             <div class="form-group">
                 <label>Anne sağ mı ölü mü?</label>
                 <div class="radio-group">
-                    <input type="radio" id="anne_sag" name="anne_yasiyor" value="True" required>
-                    <label for="anne_sag">Sağ</label>
-                    <input type="radio" id="anne_olu" name="anne_yasiyor" value="False" required>
-                    <label for="anne_olu">Ölü</label>
+                    <input type="radio" id="anne_yasiyor" name="anne_yasiyor" value="True" required>
+                    <label for="anne_yasiyor">Sağ</label>
+                    <input type="radio" id="anne_yasiyor" name="anne_yasiyor" value="False" required>
+                    <label for="anne_yasiyor">Ölü</label>
                 </div>
             </div>
 
@@ -173,13 +177,13 @@
                     <input type="radio" id="anne_oz" name="anne_oz" value="True" required>
                     <label for="anne_oz">Öz</label>
                     <input type="radio" id="anne_uvey" name="anne_oz" value="False" required>
-                    <label for="anne_uvey">Üvey</label>
+                    <label for="anne_oz">Üvey</label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="anne_maas">Aylık Net Gelir:</label>
-                <input type="text" id="anne_maas" name="anne_maas" placeholder="Aylık net gelirinizi giriniz"
+                <input type="number" id="anne_maas" name="anne_maas" placeholder="Aylık net gelirinizi giriniz"
                        required pattern="\d*" title="Lütfen sadece sayılar giriniz."
                        oninput="this.value=this.value.replace(/[^0-9]/g,'');">
             </div>
@@ -211,14 +215,19 @@
                 <label for="baba_meslek">Mesleği:</label>
                 <input type="text" id="baba_meslek" name="baba_meslek" placeholder="Mesleğinizi giriniz" required>
             </div>
+            
+            <div class="form-group">
+                <label for="baba_kurum">Kurum:</label>
+                <input type="text" id="baba_kurum" name="baba_kurum" placeholder="Kurumunuzu giriniz" required>
+            </div>
 
             <div class="form-group">
                 <label>Baba sağ mı ölü mü?</label>
                 <div class="radio-group">
                     <input type="radio" id="baba_sag" name="baba_yasiyor" value="True" required>
-                    <label for="baba_sag">Sağ</label>
-                    <input type="radio" id="baba_olu" name="baba_yasiyor" value="False" required>
-                    <label for="baba_olu">Ölü</label>
+                    <label for="baba_yasiyor">Sağ</label>
+                    <input type="radio" id="baba_sag" name="baba_yasiyor" value="False" required>
+                    <label for="baba_yasiyor">Ölü</label>
                 </div>
             </div>
 
@@ -227,14 +236,14 @@
                 <div class="radio-group">
                     <input type="radio" id="baba_oz" name="baba_oz" value="True" required>
                     <label for="baba_oz">Öz</label>
-                    <input type="radio" id="baba_uvey" name="baba_oz" value="False" required>
-                    <label for="baba_uvey">Üvey</label>
+                    <input type="radio" id="baba_oz" name="baba_oz" value="False" required>
+                    <label for="baba_oz">Üvey</label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="baba_maas">Aylık Net Gelir:</label>
-                <input type="text" id="baba_maas" name="baba_maas" placeholder="Aylık net gelirinizi giriniz"
+                <input type="number" id="baba_maas" name="baba_maas" placeholder="Aylık net gelirinizi giriniz"
                        required pattern="\d*" title="Lütfen sadece sayılar giriniz."
                        oninput="this.value=this.value.replace(/[^0-9]/g,'');">
             </div>
@@ -244,10 +253,10 @@
              <div class="form-group">
                     <label for="adres">Ev Sahibi mi:</label>
                     <div class="radio-group">
-                        <input type="radio" id="ev_sahibi" name="ev_sahibi" value="True" required>
-                        <label for="ev_sahibi">Evet</label>
-                        <input type="radio" id="ev_kiraci" name="ev_sahibi" value="False" required>
-                        <label for="ev_kiraci">Hayır</label>
+                        <input type="radio" id="ev_varmi" name="ev_sahibi" value="True" required>
+                        <label for="ev_varmi">Evet</label>
+                        <input type="radio" id="ev_varmi" name="ev_sahibi" value="False" required>
+                        <label for="ev_varmi">Hayır</label>
                     </div>
                 </div>
 
@@ -255,9 +264,9 @@
                     <label>Anne ve Baba Birlikte mi Yaşıyor?</label>
                     <div class="radio-group">
                         <input type="radio" id="birlikte" name="birlikte" value="True" required>
-                        <label for="birlikte">Evet</label>
+                        <label for="evlimi">Evet</label>
                         <input type="radio" id="ayri" name="birlikte" value="False" required>
-                        <label for="ayri">Hayır</label>
+                        <label for="evlimi">Hayır</label>
                     </div>
                 </div>
 
@@ -270,6 +279,19 @@ bilgilerin hatalı olması durumudna doğacak sorumluluğu kabul ediyorum.) -->
             </div>
         </form>
     </div>
+<script>
+document.querySelector('form').addEventListener('submit', function(event) {
+    let day = document.getElementById('day').value;
+    let month = document.getElementById('month').value;
+    let year = document.getElementById('year').value;
 
+    if (day && month && year) {
+        document.getElementById('dogum_tarihi').value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    } else {
+        alert('Lütfen geçerli bir tarih seçin.');
+        event.preventDefault();
+    }
+});
+</script>
 </body>
 </html>

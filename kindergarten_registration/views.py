@@ -65,19 +65,15 @@ def atama(request):
     }
     return render(request, 'assignment.html', context)
 
+
 def show_kres(request):
     kresler = Kres.objects.all()  # Kres modelindeki tüm kayıtları al
     return render(request, 'index.html', {'kresler': kresler})
 
+
 @csrf_exempt
 def ogrenci_kayit(request):
     if request.method == 'POST':
-        day = request.POST.get('day')
-        month = request.POST.get('month')
-        year = request.POST.get('year')
-
-        dogum_tarihi_str = f"{year}-{month}-{day}"
-        dogum_tarihi = datetime.strptime(dogum_tarihi_str, "%Y-%m-%d").date()
         form = StudentForm(request.POST)
         if form.is_valid():
             student = form.save()
@@ -88,6 +84,7 @@ def ogrenci_kayit(request):
             messages.success(request, 'Student successfully saved.')
             return redirect('success')
         else:
+            print(form.errors)
             messages.error(request, 'Form is not valid. Please check your inputs.')
     else:
         form = StudentForm()

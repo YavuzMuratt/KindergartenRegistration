@@ -63,13 +63,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector("form").addEventListener("submit", function (event) {
         checkFormValidity();
-        
+
         if (submitButton.disabled) {
             event.preventDefault();
             errorMessage.classList.add("visible");
         }
     });
 });
+
+
 // Mevcut kodlarınızın altına ekleyin
 document.getElementById('submitButton').addEventListener('click', function(event) {
     const agreementChecked = document.getElementById('agreement').checked;

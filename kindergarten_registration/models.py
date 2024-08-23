@@ -32,6 +32,7 @@ class Ogrenci(models.Model):
     elendi = models.BooleanField(default=False)
 
     isim = models.CharField(max_length=100)
+    soyisim = models.CharField(max_length=100,blank=True)
     tc_no = models.CharField(max_length=11)
     adres = models.CharField(max_length=255)
     dogum_tarihi = models.DateField(default=timezone.now)
@@ -43,26 +44,28 @@ class Ogrenci(models.Model):
     tercih_edilen_okul = models.ForeignKey('Kres', on_delete=models.SET_NULL, null=True, blank=True)
 
     # Parent 1 Info
-    anne_ismi = models.CharField(max_length=100, blank=True)
+    anne_isim = models.CharField(max_length=100, blank=True)
+    anne_soyisim = models.CharField(max_length=100, blank=True)
     anne_telefon = models.CharField(max_length=20, blank=True)
     anne_egitim = models.CharField(max_length=100, blank=True)
     anne_meslek = models.CharField(max_length=100, blank=True)
     anne_kurum = models.CharField(max_length=100, blank=True)
     anne_yasiyor = models.BooleanField(default=True)
-    anne_ev_varmi = models.BooleanField(default=False)
-    anne_evlimi = models.BooleanField(default=False)
+    anne_oz = models.BooleanField(default=True)
     anne_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     # Parent 2 Info
     baba_isim = models.CharField(max_length=100, blank=True)
+    baba_soyisim = models.CharField(max_length=100, blank=True)
     baba_telefon = models.CharField(max_length=20, blank=True)
     baba_egitim = models.CharField(max_length=100, blank=True)
     baba_meslek = models.CharField(max_length=100, blank=True)
     baba_kurum = models.CharField(max_length=100, blank=True)
     baba_yasiyor = models.BooleanField(default=True)
-    baba_ev_varmi = models.BooleanField(default=False)
-    baba_evlimi = models.BooleanField(default=False)
+    baba_oz = models.BooleanField(default=True)
     baba_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    evlimi = models.CharField(max_length=10, choices=[('Evli', 'Evli'), ('Ayrı', 'Ayrı')], blank=True, null=True)
+    ev_varmi = models.CharField(max_length=10, choices=[('Ev Sahibi', 'Ev Sahibi'), ('Kira', 'Kira')], blank=True, null=True)
 
     # Foreign Key to Kindergarten
     kres = models.ForeignKey('Kres', related_name='students', on_delete=models.CASCADE, null=True, blank=True)
@@ -91,15 +94,15 @@ class Ogrenci(models.Model):
             return "Elendi"
         if self.okul_tecrubesi == 'Devlet':
             points += 5
-        if 'Atakum Belediyesi' in self.anne_meslek or 'Atakum Belediyesi' in self.baba_meslek:
+        if 'Atakum Belediyesi' in self.anne_kurum or 'Atakum Belediyesi' in self.baba_kurum:
             points += 5
         if not self.anne_yasiyor:
             points += 5
         if not self.baba_yasiyor:
             points += 5
-        if self.anne_evlimi or self.baba_evlimi:
+        if not self.evlimi:
             points += 5
-        if not self.anne_ev_varmi or not self.baba_ev_varmi:
+        if not self.ev_varmi:
             points += 5
         total_salary = (self.anne_maas or 0) + (self.baba_maas or 0)
         if total_salary < 18000:
