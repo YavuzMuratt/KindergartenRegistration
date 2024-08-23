@@ -33,7 +33,7 @@ class StudentForm(forms.ModelForm):
     )
 
     kres = forms.ModelChoiceField(queryset=Kres.objects.all(), required=True, widget=forms.Select())
-    dogum_tarihi = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True)
+    #dogum_tarihi = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True)
     def clean(self):
         cleaned_data = super().clean()
         kurum = cleaned_data.get('kurum')
