@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'kresdb',  # PostgreSQL veritabanı adı
-        'USER': 'admin_user',   # PostgreSQL kullanıcı adı
+        'USER': 'postgres',   # PostgreSQL kullanıcı adı
         'PASSWORD': 'parola',      # PostgreSQL kullanıcı şifresi
         'HOST': 'localhost',       # PostgreSQL sunucusu adresi
         'PORT': '5432',            # PostgreSQL portu (varsayılan 5432)
