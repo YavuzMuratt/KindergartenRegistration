@@ -44,6 +44,49 @@
                        oninput="this.value=this.value.replace(/[^0-9]/g,'');">
             </div>
 
+                        <div class="form-group">
+                <label for="doğum_tarihi">Doğum Tarihi:</label>
+                <div class="date-group">
+                    <select id="day" name="day" required>
+                        <option value="" selected>Gün</option>
+                        
+                        <script>
+                            for (let i = 1; i <= 31; i++) {
+                                document.write('<option value="' + i + '">' + i + '</option>');
+                            }
+                        </script>
+                    </select>
+
+                    <select id="month" name="month" required>
+                        <option value="" disabled selected>Ay</option>
+                        
+                        <option value="01">Ocak</option>
+                        <option value="02">Şubat</option>
+                        <option value="03">Mart</option>
+                        <option value="04">Nisan</option>
+                        <option value="05">Mayıs</option>
+                        <option value="06">Haziran</option>
+                        <option value="07">Temmuz</option>
+                        <option value="08">Ağustos</option>
+                        <option value="09">Eylül</option>
+                        <option value="10">Ekim</option>
+                        <option value="11">Kasım</option>
+                        <option value="12">Aralık</option>
+                    </select>
+
+                    <select id="year" name="year" required>
+                        <option value="" disabled selected>Yıl</option>
+                       
+                        <script>
+                            let currentYear = new Date().getFullYear();
+                            for (let i = currentYear; i >= 1900; i--) {
+                                document.write('<option value="' + i + '">' + i + '</option>');
+                            }
+                        </script>
+                    </select>
+                </div>
+            </div>
+            
             <div class="form-group">
                 <label for="adres">Adres:</label>
                 <input type="text" id="adres" name="adres" placeholder="Adresinizi giriniz" required>
