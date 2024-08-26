@@ -23,7 +23,7 @@
             <h1>Kreş Bilgisi</h1>
             <div class="form-group">
                 <label for="kres">Kayıt Olmak İstediğiniz Şube</label>
-                {{ form.kres }}
+                {{ form.preferred_kindergarten }}
             </div>
 
             <h1>Öğrenci Bilgileri</h1>
@@ -45,44 +45,8 @@
             </div>
 
             <div class="form-group">
-                {{ form.dogum_tarihi }}
                 <label for="day">Doğum Tarihi:</label>
-                <div class="date-group">
-                    <select id="day" name="day" required>
-                        <option value="" selected>Gün</option>
-                        <script>
-                            for (let i = 1; i <= 31; i++) {
-                                document.write('<option value="' + i + '">' + i + '</option>');
-                            }
-                        </script>
-                    </select>
-            
-                    <select id="month" name="month" required>
-                        <option value="" disabled selected>Ay</option>
-                        <option value="01">Ocak</option>
-                        <option value="02">Şubat</option>
-                        <option value="03">Mart</option>
-                        <option value="04">Nisan</option>
-                        <option value="05">Mayıs</option>
-                        <option value="06">Haziran</option>
-                        <option value="07">Temmuz</option>
-                        <option value="08">Ağustos</option>
-                        <option value="09">Eylül</option>
-                        <option value="10">Ekim</option>
-                        <option value="11">Kasım</option>
-                        <option value="12">Aralık</option>
-                    </select>
-            
-                    <select id="year" name="year" required>
-                        <option value="" disabled selected>Yıl</option>
-                        <script>
-                            let currentYear = new Date().getFullYear();
-                            for (let i = currentYear; i >= 1900; i--) {
-                                document.write('<option value="' + i + '">' + i + '</option>');
-                            }
-                        </script>
-                    </select>
-                </div>
+                {{ form.dogum_tarihi }}
             </div>
 
             

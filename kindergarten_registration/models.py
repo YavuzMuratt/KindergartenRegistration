@@ -33,7 +33,7 @@ class Ogrenci(models.Model):
 
     isim = models.CharField(max_length=100)
     soyisim = models.CharField(max_length=100,blank=True)
-    tc_no = models.CharField(max_length=11)
+    tc_no = models.CharField(max_length=11,primary_key=True)
     adres = models.CharField(max_length=255)
     dogum_tarihi = models.DateField(default=timezone.now)
     kayıt_tarihi = models.DateTimeField(default=timezone.now)
@@ -64,8 +64,8 @@ class Ogrenci(models.Model):
     baba_yasiyor = models.BooleanField(default=True)
     baba_oz = models.BooleanField(default=True)
     baba_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    evlimi = models.CharField(max_length=10, choices=[('Evli', 'Evli'), ('Ayrı', 'Ayrı')], blank=True, null=True)
-    ev_varmi = models.CharField(max_length=10, choices=[('Ev Sahibi', 'Ev Sahibi'), ('Kira', 'Kira')], blank=True, null=True)
+    evlimi = models.BooleanField(default=True)
+    ev_varmi = models.BooleanField(default=True)
 
     # Foreign Key to Kindergarten
     kres = models.ForeignKey('Kres', related_name='students', on_delete=models.CASCADE, null=True, blank=True)

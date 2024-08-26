@@ -14,34 +14,16 @@ class StudentForm(forms.ModelForm):
         ('Atakum Belediyesi', 'Atakum Belediyesi'),
         ('Diğer', 'Diğer'),
     ]
-    #anne_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
-    #baba_kurum = forms.ChoiceField(choices=KURUMLAR, required=True)
-    #diger_kurum = forms.CharField(required=False)
+
     okul_tecrubesi = forms.ChoiceField(choices=OKUL_TIPLERI, required=False, widget=forms.Select())
-
+    preferred_kindergarten = Ogrenci.tercih_edilen_okul.kres_ismi
     preferred_kindergarten = forms.ModelChoiceField(
         queryset=Kres.objects.all(),
         required=False,
         label="Tercih Edilen Anaokulu"
     )
 
-    preferred_kindergarten = forms.ModelChoiceField(
-        queryset=Kres.objects.all(),
-        required=False,
-        label="Tercih Edilen Anaokulu"
-    )
 
-    kres = forms.ModelChoiceField(queryset=Kres.objects.all(), required=True, widget=forms.Select())
-    def clean(self):
-        cleaned_data = super().clean()
-        kurum = cleaned_data.get('kurum')
-        diger_kurum = cleaned_data.get('diger_kurum')
-
-
-        if kurum == 'Diğer' and not diger_kurum:
-            raise ValidationError("Diğer Kurum'u seçtiyseniz, lütfen alanı doldurunuz.")
-
-        return cleaned_data
 
     class Meta:
         model = Ogrenci
@@ -60,8 +42,8 @@ class StudentForm(forms.ModelForm):
             'okul_tecrubesi': forms.Select(),
             'anne_yasiyor': forms.CheckboxInput(),
             'baba_yasiyor': forms.CheckboxInput(),
-            'evlimi': forms.Select(),
-            'ev_varmi': forms.Select(),
+            'evlimi': forms.CheckboxInput(),
+            'ev_varmi': forms.CheckboxInput(),
             'kardes_sayisi': forms.NumberInput(attrs={'class': 'input', 'min': 0}),
         }
         labels = {
@@ -72,6 +54,7 @@ class StudentForm(forms.ModelForm):
             'okul_tecrubesi': 'Okul Tecrübesi',
             'devlet_ozel': 'Devlet / Özel',
             'kardes_sayisi': 'Kardeş Sayısı',
+            'preferred_kindergarten': 'Tercih Edilen Anaokulu',
             'anne_ismi': 'Anne Adı',
             'anne_telefon': 'Anne Telefonu',
             'anne_egitim': 'Anne Eğitimi',
@@ -87,7 +70,7 @@ class StudentForm(forms.ModelForm):
             'baba_yasiyor': 'Baba Yaşıyor',
             'baba_oz': 'Baba Oz',
             'baba_ev_varmi': 'Baba Evi Var mı',
-            'evlimi': 'Anne Baba Evli mi',
+            'evli_mi': 'Anne Baba Evli mi',
             'ev_varmi': 'Ev Sahibi misiniz?',
         }
         help_texts = {
