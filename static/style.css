@@ -1,3 +1,4 @@
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -14,11 +15,11 @@ body {
 /* Logo ve Başlık Alanı */
 .header {
     text-align: center;
-    margin-bottom: 40px; 
+    margin-bottom: 40px;
 }
 
 .logo {
-    max-width: 500px; 
+    max-width: 500px;
     height: auto;
     margin-bottom: 40px;
 }
@@ -27,7 +28,7 @@ body {
     font-size: 32px;
     color: #333;
     margin: 0;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .main-title2 {
@@ -44,6 +45,8 @@ body {
     width: 800px;
     box-sizing: border-box;
     margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 h1 {
@@ -82,17 +85,17 @@ input[type="text"]::placeholder {
 }
 
 input[type="number"] {
-    height: 48px; 
+    height: 48px; /* Adjust this value to match the height of other input fields */
 }
 
 .radio-group {
     display: flex;
-    justify-content: flex-start; 
-    gap: 10px; 
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 .radio-group input[type="radio"] {
-    transform: scale(1.3); 
+    transform: scale(1.3);
 }
 
 .radio-group label {
@@ -118,7 +121,6 @@ input[type="number"] {
 
 .submit-button {
     text-align: center;
-    margin-top: 20px;
 }
 
 button[type="submit"] {
@@ -141,17 +143,22 @@ footer {
     font-size: 16px;
     color: #777;
 }
-
+.submit-button {
+    text-align: center;
+    margin-top: 20px;
+}
 .warning {
     color: red;
     font-size: 14px;
     margin-left: 10px;
 }
-
 .container2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+.form-group {
+    margin-bottom: 15px;
 }
 
 .checkbox-label {
@@ -169,13 +176,18 @@ footer {
 
 #error-message {
     color: red;
-    visibility: hidden; 
+    visibility: hidden; /* Başlangıçta gizli */
     font-weight: bold;
     margin-top: 10px;
 }
 
 #error-message.visible {
-    visibility: visible; 
+    visibility: visible; /* Hata durumunda görünür */
+}
+
+.submit-button {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .submit-button button:disabled {
@@ -183,129 +195,3 @@ footer {
     cursor: not-allowed;
 }
 
-input.valid, select.valid {
-    border: 2px solid green;
-}
-
-input.invalid, select.invalid {
-    border: 2px solid red;
-}
-
-input, select {
-    border: 1px solid #ccc;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
-
-.container {
-    margin: 20px 0;
-    position: relative;
-    z-index: 1;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-}
-
-.admin-container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-}
-
-.navbar {
-    width: 300px;
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    height: 100vh;
-    position: fixed;
-}
-
-.navbar h2 {
-    margin-bottom: 30px;
-    font-size: 24px;
-}
-
-.navbar ul {
-    list-style-type: none;
-}
-
-.navbar ul li {
-    margin-bottom: 20px;
-}
-
-.navbar ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.navbar ul li a:hover {
-    text-decoration: underline;
-}
-
-.content {
-    margin-left: 300px;
-    padding: 20px;
-    flex-grow: 1;
-}
-
-.hidden {
-    display: none;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-th, td {
-    text-align: left;
-}
-
-.hidden {
-    display: none;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-th, td {
-    text-align: left;
-}
-
-/* Yeni Öğrenci Listesi Stili */
-.student-list tbody tr td {
-    text-align: center;
-}
