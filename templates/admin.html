@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="navbar">
+            <h2>Admin Paneli</h2>
+            <ul>
+                <li><a href="#" onclick="showStudents()">Öğrenciler</a></li>
+                <li><a href="#" onclick="showApplications()">Başvurular</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div id="welcome-message">
+                <h1>Hoşgeldiniz!</h1>
+                <p>Bu admin paneline hoş geldiniz. Sol taraftaki menüyü kullanarak öğrenciler ve başvurular hakkında bilgi edinebilirsiniz.</p>
+            </div>
+
+            <!-- Öğrenci Bilgileri -->
+            <div id="students" class="hidden">
+                <h1>Tüm Öğrenciler</h1>
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>Öğrenci ID</th>
+                            <th>İsim Soyisim</th>
+                            <th>TC No</th>
+                            <th>Doğum Tarihi</th>
+                            <th>Adres</th>
+                            <th>Okul</th>
+                            <th>Şube</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" id="student-id" placeholder="Öğrenci ID..."></td>
+                            <td><input type="text" id="full-name" placeholder="İsim Soyisim..."></td>
+                            <td><input type="text" id="tc-no" placeholder="TC NO..." maxlength="11"></td>
+                            <td>
+                                <select id="birth-day">
+                                    <option value="">Gün</option>
+                                    <!-- Gün seçenekleri JavaScript ile eklenecek -->
+                                </select>
+                                <select id="birth-month">
+                                    <option value="">Ay</option>
+                                    <!-- Ay seçenekleri JavaScript ile eklenecek -->
+                                </select>
+                                <select id="birth-year">
+                                    <option value="">Yıl</option>
+                                    <!-- Yıl seçenekleri JavaScript ile eklenecek -->
+                                </select>
+                            </td>
+                            <td><input type="text" id="address" placeholder="Adres..."></td>
+                            <td>
+                                <select id="school">
+                                    <option value="Okul 1">Okul 1</option>
+                                    <option value="Okul 2">Okul 2</option>
+                                    <option value="Okul 3">Okul 3</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="branch">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </td>
+                            <td><button id="add-student" onclick="addOrUpdateStudent()">Öğrenci Ekle</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Mevcut Öğrenci Listesi -->
+                <h2>Mevcut Öğrenciler</h2>
+                <table class="student-list">
+                    <thead>
+                        <tr>
+                            <th>Öğrenci ID</th>
+                            <th>İsim Soyisim</th>
+                            <th>TC No</th>
+                            <th>Doğum Tarihi</th>
+                            <th>Adres</th>
+                            <th>Okul</th>
+                            <th>Şube</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-table-body">
+                        <!-- Öğrenci bilgileri burada JavaScript ile dinamik olarak eklenecek -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Başvuru Bilgileri -->
+            <div id="applications" class="hidden">
+                <!-- Başvuru Onay Formu -->
+                <div id="application-form">
+                    <h1>Başvuru Onayla</h1>
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>Öğrenci ID</th>
+                                <th>İsim Soyisim</th>
+                                <th>TC No</th>
+                                <th>Doğum Tarihi</th>
+                                <th>Adres</th>
+                                <th>Okul</th>
+                                <th>Şube</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" id="application-id" disabled></td>
+                                <td><input type="text" id="application-name" disabled></td>
+                                <td><input type="text" id="application-tc" disabled></td>
+                                <td>
+                                    <select id="application-birth-day" disabled>
+                                        <option value="">Gün</option>
+                                        <!-- Gün seçenekleri JavaScript ile eklenecek -->
+                                    </select>
+                                    <select id="application-birth-month" disabled>
+                                        <option value="">Ay</option>
+                                        <!-- Ay seçenekleri JavaScript ile eklenecek -->
+                                    </select>
+                                    <select id="application-birth-year" disabled>
+                                        <option value="">Yıl</option>
+                                        <!-- Yıl seçenekleri JavaScript ile eklenecek -->
+                                    </select>
+                                </td>
+                                <td><input type="text" id="application-address" disabled></td>
+                                <td>
+                                    <select id="application-school">
+                                        <option value="Okul 1">Okul 1</option>
+                                        <option value="Okul 2">Okul 2</option>
+                                        <option value="Okul 3">Okul 3</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="application-branch">
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="approveApplication()">Başvuruyu Onayla</button>
+                </div>
+
+                <!-- Başvuru Listesi -->
+                <h1>Başvuru Yapan Öğrenciler</h1>
+                <table class="student-list">
+                    <thead>
+                        <tr>
+                            <th>Öğrenci ID</th>
+                            <th>İsim Soyisim</th>
+                            <th>TC No</th>
+                            <th>Doğum Tarihi</th>
+                            <th>Adres</th>
+                            <th>Okul</th>
+                            <th>Şube</th>
+                            <th>Puan</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="application-table-body">
+                        <!-- Başvuru yapan öğrenciler burada JavaScript ile dinamik olarak eklenecek -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'static/admin.js' %}"></script>
+</body>
+</html>
