@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Paneli</title>
-    <link rel="stylesheet" href="/static/admin.css">
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
 </head>
 <body>
     <div class="admin-container">
@@ -13,6 +13,8 @@
             <ul>
                 <li><a href="#" onclick="showStudents()">Öğrenciler</a></li>
                 <li><a href="#" onclick="showApplications()">Başvurular</a></li>
+                <li><a href="#" onclick="showNurseries()">Kreşler</a></li>
+                <li><a href="#" onclick="showBranches()">Şubeler</a></li>
             </ul>
         </div>
         <div class="content">
@@ -174,9 +176,125 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+       
+        <!-- Kreş Bilgileri -->
+<div id="nurseries" class="hidden">
+    <h1>Tüm Kreşler</h1>
+    <div class="form-container">
+        <table class="nursery-table">
+            <thead>
+                <tr>
+                    <th>Kreş ID</th>
+                    <th>İsim</th>
+                    <th>Şube Sayısı</th>
+                    <th>Kapasite</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" id="nursery-id" placeholder="Kreş ID..."></td>
+                    <td><input type="text" id="nursery-name" placeholder="Kreş İsmi..."></td>
+                    <td><input type="number" id="nursery-branch-count" placeholder="Şube Sayısı..."></td>
+                    <td><input type="number" id="nursery-capacity" placeholder="Kapasite..."></td>
+                    <td><button id="add-nursery" onclick="addOrUpdateNursery()">Kreş Ekle</button></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <script src="/static/admin.js"></script>
 
+    <!-- Mevcut Kreş Listesi -->
+    <h2>Mevcut Kreşler</h2>
+    <table class="nursery-list">
+        <thead>
+            <tr>
+                <th>Kreş ID</th>
+                <th>İsim</th>
+                <th>Şube Sayısı</th>
+                <th>Kapasite</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody id="nursery-table-body">
+            <!-- Kreş bilgileri burada JavaScript ile dinamik olarak eklenecek -->
+            <!-- Örnek Kreş -->
+            <tr>
+                <td>K1</td>
+                <td>Kreş 1</td>
+                <td>3</td>
+                <td>100</td>
+                <td>
+                    <button onclick="editNursery(0)">Düzenle</button>
+                    <button onclick="deleteNursery(0)">Sil</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+       <!-- Şube Bilgileri -->
+<div id="branches" class="hidden">
+    <h1>Tüm Şubeler</h1>
+    <div class="form-container">
+        <table class="branch-table">
+            <thead>
+                <tr>
+                    <th>Şube ID</th>
+                    <th>İsim</th>
+                    <th>Kreş</th>
+                    <th>Kapasite</th>
+                    <th>Öğretmenler</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" id="branch-id" placeholder="Şube ID..."></td>
+                    <td><input type="text" id="branch-name" placeholder="Şube İsmi..."></td>
+                    <td>
+                        <select id="branch-nursery">
+                            <option value="">Kreş Seçin...</option>
+                            <option value="Kreş 1">Kreş 1</option>
+                            <option value="Kreş 2">Kreş 2</option>
+                            <option value="Kreş 3">Kreş 3</option>
+                        </select>
+                    </td>
+                    <td><input type="number" id="branch-capacity" placeholder="Kapasite..." min="1"></td>
+                    <td>
+                        <select id="branch-teachers">
+                            <option value="">Öğretmen Seçin...</option>
+                            <option value="1">Öğretmen 1</option>
+                            <option value="2">Öğretmen 2</option>
+                            <option value="3">Öğretmen 3</option>
+                        </select>
+                    </td>
+                    <td><button id="add-branch" onclick="addOrUpdateBranch()">Şube Ekle</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mevcut Şube Listesi -->
+    <h2>Mevcut Şubeler</h2>
+    <table class="branch-list">
+        <thead>
+            <tr>
+                <th>Şube ID</th>
+                <th>İsim</th>
+                <th>Kreş</th>
+                <th>Kapasite</th>
+                <th>Öğretmenler</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody id="branch-table-body">
+            <!-- Şube bilgileri burada JavaScript ile dinamik olarak eklenecek -->
+        </tbody>
+    </table>
+</div>
+
+    </div>
+</div>
+<script src="{% static 'static/admin.js' %}"></script>
 </body>
 </html>
