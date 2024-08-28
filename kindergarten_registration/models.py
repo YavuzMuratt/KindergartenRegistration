@@ -114,13 +114,12 @@ class Ogrenci(models.Model):
 
         return points
 
-
 class Sınıf(models.Model):
     isim = models.CharField(max_length=100)
     kres = models.ForeignKey('Kres', related_name='kres_siniflar', on_delete=models.CASCADE)
     yas_grubu = models.IntegerField()
     ilk_yari = models.BooleanField(default=True)
-    students = ManyToManyField('Ogrenci', related_name='ogrenci_sinif', blank=True)
+    students = models.ManyToManyField('Ogrenci', related_name='sinif_students', blank=True)
 
     def bosluk_varmi(self):
         return self.students.count() < self.kres.toplam_ogrenci_limit / 5
@@ -131,8 +130,6 @@ class Sınıf(models.Model):
 
     def __str__(self):
         return f"{self.isim} - {self.kres.kres_ismi}"
-
-
 
 @receiver(post_save, sender=Kres)
 def create_siniflar_for_kres(sender, instance, created, **kwargs):
