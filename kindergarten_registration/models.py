@@ -1,5 +1,6 @@
 from datetime import date
 from django.db import models
+from django.db.models import ManyToManyField
 from django.db.models.signals import post_save
 from django.utils import timezone
 from django.dispatch import receiver
@@ -119,7 +120,7 @@ class Sınıf(models.Model):
     kres = models.ForeignKey('Kres', related_name='kres_siniflar', on_delete=models.CASCADE)
     yas_grubu = models.IntegerField()
     ilk_yari = models.BooleanField(default=True)
-    students = models.ManyToManyField('Ogrenci', related_name='sinif_students', blank=True)
+    students = ManyToManyField('Ogrenci', related_name='ogrenci_sinif', blank=True)
 
     def bosluk_varmi(self):
         return self.students.count() < self.kres.toplam_ogrenci_limit / 5
@@ -130,6 +131,7 @@ class Sınıf(models.Model):
 
     def __str__(self):
         return f"{self.isim} - {self.kres.kres_ismi}"
+
 
 
 @receiver(post_save, sender=Kres)
