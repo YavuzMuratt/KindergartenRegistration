@@ -4,26 +4,19 @@ from django.core.exceptions import ValidationError
 
 
 class StudentForm(forms.ModelForm):
-    OKUL_TIPLERI = [
-        ('None', 'Yok'),
-        ('Devlet', 'Devlet'),
-        ('Özel', 'Özel'),
-    ]
+
     KURUMLAR = [
         ('None', 'Seçiniz'),
         ('Atakum Belediyesi', 'Atakum Belediyesi'),
         ('Diğer', 'Diğer'),
     ]
 
-    okul_tecrubesi = forms.ChoiceField(choices=OKUL_TIPLERI, required=False, widget=forms.Select())
-    preferred_kindergarten = Ogrenci.tercih_edilen_okul.kres_ismi
-    preferred_kindergarten = forms.ModelChoiceField(
+
+    tercih_edilen_okul = forms.ModelChoiceField(
         queryset=Kres.objects.all(),
         required=False,
         label="Tercih Edilen Anaokulu"
     )
-
-
 
     class Meta:
         model = Ogrenci
@@ -54,7 +47,7 @@ class StudentForm(forms.ModelForm):
             'okul_tecrubesi': 'Okul Tecrübesi',
             'devlet_ozel': 'Devlet / Özel',
             'kardes_sayisi': 'Kardeş Sayısı',
-            'preferred_kindergarten': 'Tercih Edilen Anaokulu',
+            'tercih_edilen_okul': 'Tercih Edilen Anaokulu',
             'anne_ismi': 'Anne Adı',
             'anne_telefon': 'Anne Telefonu',
             'anne_egitim': 'Anne Eğitimi',

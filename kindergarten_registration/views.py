@@ -30,10 +30,10 @@ def atama(request):
             ilk_yari = student.dogum_tarihi.month <= 6
             assigned = False
 
-            if student.tercih_edilen_okul:
-                sinif = student.tercih_edilen_okul.kres_siniflar.filter(yas_grubu=yas, ilk_yari=ilk_yari).first()
+            if student.kreslerfk:
+                sinif = student.kreslerfk.kres_siniflar.filter(yas_grubu=yas, ilk_yari=ilk_yari).first()
                 if sinif and sinif.bosluk_varmi():
-                    student.kres = student.tercih_edilen_okul
+                    student.kres = student.kreslerfk
                     student.sinif = sinif
                     student.save()
                     assigned = True

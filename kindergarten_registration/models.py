@@ -22,11 +22,6 @@ class Kres(models.Model):
 
 
 class Ogrenci(models.Model):
-    OKUL_TIPLERI = [
-        ('None', 'No Experience'),
-        ('Devlet', 'Devlet'),
-        ('Özel', 'Özel'),
-    ]
 
     sinif = models.ForeignKey('Sınıf', related_name='sınıf_students', on_delete=models.SET_NULL, null=True, blank=True)
     elendi = models.BooleanField(default=False)
@@ -38,7 +33,7 @@ class Ogrenci(models.Model):
     dogum_tarihi = models.DateField(default=timezone.now)
     kayıt_tarihi = models.DateTimeField(default=timezone.now)
     tuvalet_egitimi = models.BooleanField(default=False)
-    okul_tecrubesi = models.CharField(max_length=10, choices=OKUL_TIPLERI, default='None', blank=True)
+    okul_tecrubesi = models.CharField(max_length=10, default='None', blank=True)
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
     kardes_sayisi = models.IntegerField(default=0, blank=True)
     tercih_edilen_okul = models.ForeignKey('Kres', on_delete=models.SET_NULL, null=True, blank=True)

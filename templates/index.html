@@ -22,8 +22,8 @@
 
             <h1>Kreş Bilgisi</h1>
             <div class="form-group">
-                <label for="kres">Kayıt Olmak İstediğiniz Şube</label>
-                {{ form.preferred_kindergarten }}
+                <label for="tercih_edilen_okul">Kayıt Olmak İstediğiniz Şube</label>
+                {{ form.tercih_edilen_okul }}
             </div>
 
             <h1>Öğrenci Bilgileri</h1>
@@ -68,9 +68,9 @@
             <div class="form-group">
                 <label>Okul deneyimi var mı?</label>
                 <div class="radio-group">
-                    <input type="radio" id="okulEvet" name="okul_tecrubesi" value="Devlet" required>
+                    <input type="radio" id="okulEvet" name="okul_tecrubesi" value="Var" required>
                     <label for="okul_tecrubesi">Var</label>
-                    <input type="radio" id="okulHayir" name="okul_tecrubesi" value="None" required>
+                    <input type="radio" id="okulHayir" name="okul_tecrubesi" value="Yok" required>
                     <label for="okul_tecrubesi">Yok</label>
                 </div>
             </div>
