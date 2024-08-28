@@ -1,5 +1,6 @@
 from datetime import date
 from django.db import models
+from django.db.models import ManyToManyField
 from django.db.models.signals import post_save
 from django.utils import timezone
 from django.dispatch import receiver
@@ -22,47 +23,45 @@ class Kres(models.Model):
 
 
 class Ogrenci(models.Model):
-    OKUL_TIPLERI = [
-        ('None', 'No Experience'),
-        ('Devlet', 'Devlet'),
-        ('Özel', 'Özel'),
-    ]
 
     sinif = models.ForeignKey('Sınıf', related_name='sınıf_students', on_delete=models.SET_NULL, null=True, blank=True)
     elendi = models.BooleanField(default=False)
 
     isim = models.CharField(max_length=100)
-    tc_no = models.CharField(max_length=11)
+    soyisim = models.CharField(max_length=100,blank=True)
+    tc_no = models.CharField(max_length=11,primary_key=True)
     adres = models.CharField(max_length=255)
     dogum_tarihi = models.DateField(default=timezone.now)
     kayıt_tarihi = models.DateTimeField(default=timezone.now)
     tuvalet_egitimi = models.BooleanField(default=False)
-    okul_tecrubesi = models.CharField(max_length=10, choices=OKUL_TIPLERI, default='None', blank=True)
+    okul_tecrubesi = models.CharField(max_length=10, default='None', blank=True)
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
     kardes_sayisi = models.IntegerField(default=0, blank=True)
     tercih_edilen_okul = models.ForeignKey('Kres', on_delete=models.SET_NULL, null=True, blank=True)
 
     # Parent 1 Info
-    anne_ismi = models.CharField(max_length=100, blank=True)
+    anne_isim = models.CharField(max_length=100, blank=True)
+    anne_soyisim = models.CharField(max_length=100, blank=True)
     anne_telefon = models.CharField(max_length=20, blank=True)
     anne_egitim = models.CharField(max_length=100, blank=True)
     anne_meslek = models.CharField(max_length=100, blank=True)
     anne_kurum = models.CharField(max_length=100, blank=True)
     anne_yasiyor = models.BooleanField(default=True)
-    anne_ev_varmi = models.BooleanField(default=False)
-    anne_evlimi = models.BooleanField(default=False)
+    anne_oz = models.BooleanField(default=True)
     anne_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     # Parent 2 Info
     baba_isim = models.CharField(max_length=100, blank=True)
+    baba_soyisim = models.CharField(max_length=100, blank=True)
     baba_telefon = models.CharField(max_length=20, blank=True)
     baba_egitim = models.CharField(max_length=100, blank=True)
     baba_meslek = models.CharField(max_length=100, blank=True)
     baba_kurum = models.CharField(max_length=100, blank=True)
     baba_yasiyor = models.BooleanField(default=True)
-    baba_ev_varmi = models.BooleanField(default=False)
-    baba_evlimi = models.BooleanField(default=False)
+    baba_oz = models.BooleanField(default=True)
     baba_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    evlimi = models.BooleanField(default=True)
+    ev_varmi = models.BooleanField(default=True)
 
     # Foreign Key to Kindergarten
     kres = models.ForeignKey('Kres', related_name='students', on_delete=models.CASCADE, null=True, blank=True)
@@ -91,15 +90,15 @@ class Ogrenci(models.Model):
             return "Elendi"
         if self.okul_tecrubesi == 'Devlet':
             points += 5
-        if 'Atakum Belediyesi' in self.anne_meslek or 'Atakum Belediyesi' in self.baba_meslek:
+        if 'Atakum Belediyesi' in self.anne_kurum or 'Atakum Belediyesi' in self.baba_kurum:
             points += 5
         if not self.anne_yasiyor:
             points += 5
         if not self.baba_yasiyor:
             points += 5
-        if self.anne_evlimi or self.baba_evlimi:
+        if not self.evlimi:
             points += 5
-        if not self.anne_ev_varmi or not self.baba_ev_varmi:
+        if not self.ev_varmi:
             points += 5
         total_salary = (self.anne_maas or 0) + (self.baba_maas or 0)
         if total_salary < 18000:
@@ -114,7 +113,6 @@ class Ogrenci(models.Model):
         points += self.kardes_sayisi
 
         return points
-
 
 class Sınıf(models.Model):
     isim = models.CharField(max_length=100)
@@ -132,7 +130,6 @@ class Sınıf(models.Model):
 
     def __str__(self):
         return f"{self.isim} - {self.kres.kres_ismi}"
-
 
 @receiver(post_save, sender=Kres)
 def create_siniflar_for_kres(sender, instance, created, **kwargs):
