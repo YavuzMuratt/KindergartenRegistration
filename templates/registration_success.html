@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-content">
+            <h1>🎉 Kayıt Başarılı!</h1>
+            <p>Kaydınız başarıyla tamamlandı. Sağlıcakla kalın!</p>
+            <a href="{% url 'student_register' %}" class="button">Ana Sayfaya Dön</a>
+        </div>
+    </div>
+</body>
+</html>
