@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class KindergartenRegistrationConfig(AppConfig):
+class RegistrationConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "kindergarten_registration"
+    name = "registration"

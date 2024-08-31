@@ -1,125 +1,138 @@
+# models.py
 from django.db import models
 from django.utils import timezone
-class Kres(models.Model):
-    kres_ismi = models.CharField(max_length=100)
-    siniflar = models.IntegerField(default=5)
-    sinif_basi_ogrenci = models.IntegerField(default=10)
-    toplam_ogrenci_limit = models.IntegerField(default=50)
 
-    def bosluk_varmi(self):
-        return self.student_count < (self.siniflar * self.sinif_basi_ogrenci)
+class Kindergarten(models.Model):
+    name = models.CharField(max_length=255)
+    student_limit = models.PositiveIntegerField()
+    num_classes = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.kres_ismi
+        return self.name
 
-    @property
-    def student_count(self):
-        return self.students.count()
-
-
-class Sınıf(models.Model):
-    isim = models.CharField(max_length=100)
-    kres = models.ForeignKey(Kres, related_name='kres_siniflar', on_delete=models.CASCADE)
-    yas_grubu = models.IntegerField()
-    ilk_yari = models.BooleanField(default=True)
-
-    def bosluk_varmi(self):
-        return self.students.count() < self.kres.toplam_ogrenci_limit / 5
-
-    @property
-    def student_count(self):
-        return self.students.count()
+class Class(models.Model):
+    kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE, related_name='classes')
+    limit = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.isim} - {self.kres.kres_ismi}"
+        return f"{self.kindergarten.name} - Sınıf {self.id}"
 
+class Student(models.Model):
+    # Student Info
+    preferred_kindergarten_1 = models.ForeignKey(Kindergarten, on_delete=models.SET_NULL, null=True, related_name='preferred_1')
+    preferred_kindergarten_2 = models.ForeignKey(Kindergarten, on_delete=models.SET_NULL, null=True, related_name='preferred_2', blank=True)
+    preferred_kindergarten_3 = models.ForeignKey(Kindergarten, on_delete=models.SET_NULL, null=True, related_name='preferred_3', blank=True)
+    name = models.CharField(max_length=64)
+    tc_number = models.CharField(max_length=11, unique=True)
+    birth_date = models.DateField()
+    address = models.CharField(max_length=500)
+    toilet_trained = models.BooleanField(default=False)
+    school_experience = models.BooleanField(default=False)
+    school_type = models.CharField(max_length=20, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
+    sibling_count = models.PositiveIntegerField(default=0)
 
-class Ogrenci(models.Model):
-    OKUL_TIPLERI = [
-        ('None', 'No Experience'),
-        ('Devlet', 'Devlet'),
-        ('Özel', 'Özel'),
-    ]
-    elendi = models.BooleanField(default=False)
-    # Student Information
-    dogum_tarihi = models.DateField(default=timezone.now)
-    isim = models.CharField(max_length=100)
-    tc_no = models.CharField(max_length=20, unique=True)
-    adres = models.CharField(max_length=255)
-    tuvalet_egitimi = models.BooleanField(default=False)
-    okul_tecrubesi = models.CharField(max_length=10, choices=OKUL_TIPLERI, default='None', blank=True)
-    devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
-    kardes_sayisi = models.IntegerField(default=0, blank=True)
-    tercih_edilen_okul = models.ForeignKey(Kres, on_delete=models.SET_NULL, null=True, blank=True)
+    # Parent Info
+    mother_alive = models.BooleanField(default=True)
+    mother_name = models.CharField(max_length=255, blank=True, null=True)
+    mother_phone = models.CharField(max_length=10, blank=True, null=True)
+    mother_education = models.CharField(max_length=100, blank=True, null=True)
+    mother_job = models.CharField(max_length=100, blank=True, null=True)
+    mother_employer = models.CharField(max_length=255, blank=True, null=True)
+    mother_salary = models.PositiveIntegerField(default=0, blank=True, null=True)
 
-    # Parent 1 Info
-    anne_ismi = models.CharField(max_length=100, blank=True)
-    anne_telefon = models.CharField(max_length=20, blank=True)
-    anne_egitim = models.CharField(max_length=100, blank=True)
-    anne_meslek = models.CharField(max_length=100, blank=True)
-    anne_yasiyor = models.BooleanField(default=True)
-    anne_ev_varmi = models.BooleanField(default=False)
-    anne_evlimi = models.BooleanField(default=False)
-    anne_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    father_alive = models.BooleanField(default=True)
+    father_name = models.CharField(max_length=255, blank=True, null=True)
+    father_phone = models.CharField(max_length=10, blank=True, null=True)
+    father_education = models.CharField(max_length=100, blank=True, null=True)
+    father_job = models.CharField(max_length=100, blank=True, null=True)
+    father_employer = models.CharField(max_length=255, blank=True, null=True)
+    father_salary = models.PositiveIntegerField(default=0, blank=True, null=True)
 
-    # Parent 2 Info
-    baba_isim = models.CharField(max_length=100, blank=True)
-    baba_telefon = models.CharField(max_length=20, blank=True)
-    baba_egitim = models.CharField(max_length=100, blank=True)
-    baba_meslek = models.CharField(max_length=100, blank=True)
-    baba_yasiyor = models.BooleanField(default=True)
-    baba_ev_varmi = models.BooleanField(default=False)
-    baba_evlimi = models.BooleanField(default=False)
-    baba_maas = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    # Shared Parent Info
+    owns_house = models.BooleanField(default=True)
+    marital_status = models.CharField(max_length=10, choices=[('Birlikte', 'Birlikte'), ('Ayrı', 'Ayrı')])
 
-    # Foreign Key to Kindergarten
-    kres = models.ForeignKey(Kres, related_name='students', on_delete=models.CASCADE, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.isim} - {self.tc_no}"
-
-    def yas(self):
-        from datetime import date
-        return date.today().year - self.dogum_tarihi.year - (
-                    (date.today().month, date.today().day) < (self.dogum_tarihi.month, self.dogum_tarihi.day))
+    # Registration Info
+    registration_date = models.DateTimeField(default=timezone.now)
+    points = models.IntegerField(default=0)
+    disqualified = models.BooleanField(default=False)
+    assigned_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, blank=True)
 
     def calculate_points(self):
         points = 0
+        current_year = timezone.now().year
+        age = current_year - self.birth_date.year
 
-        yas = self.yas()
-        if yas < 3 or yas > 6:
-            self.elendi = True
+        print(f"Calculating points for student: {self.name}")
+        print(f"Student age: {age}")
+
+        if age > 6 or age < 3:
+            self.disqualified = True
             self.save()
-            return "Elendi"
-        if 'Atakum' in self.adres:
-            points += 5
-        if not self.tuvalet_egitimi:
-            self.elendi = True
-            return "Elendi"
-        if self.okul_tecrubesi == 'Devlet':
-            points += 5
-        if 'Atakum Belediyesi' in self.anne_meslek or 'Atakum Belediyesi' in self.baba_meslek:
-            points += 5
-        if not self.anne_yasiyor:
-            points += 5
-        if not self.baba_yasiyor:
-            points += 5
-        if self.anne_evlimi or self.baba_evlimi:
-            points += 5
-        if not self.anne_ev_varmi or not self.baba_ev_varmi:
-            points += 5
-        total_salary = (self.anne_maas or 0) + (self.baba_maas or 0)
-        if total_salary < 20000:
-            points -= 20
-        elif 20000 <= total_salary < 30000:
-            points -= 15
-        elif 30000 <= total_salary < 40000:
-            points -= 10
-        elif 40000 <= total_salary < 50000:
-            points -= 5
-        elif total_salary >= 50000:
-            points += 5
+            print("Disqualified: Age issue")
+            return 'Elendi'
 
-        points += self.kardes_sayisi
+        if 'Atakum' in self.address:
+            points += 5
+            print("Points for address: +5")
 
-        return points
+        if not self.toilet_trained:
+            self.disqualified = True
+            self.save()
+            print("Disqualified: Toilet training issue")
+            return 'Elendi'
+
+        points += self.sibling_count
+        print(f"Points for sibling count: +{self.sibling_count}")
+
+        if self.school_experience and self.school_type == 'Devlet':
+            points += 5
+            print("Points for school experience: +5")
+
+        if 'Atakum Bel' in (self.mother_employer or '') or 'Atakum Bel' in (self.father_employer or ''):
+            points += 5
+            print("Points for employer: +5")
+
+        if not self.mother_alive:
+            points += 5
+            print("Points for mother not alive: +5")
+
+        if not self.father_alive:
+            points += 5
+            print("Points for father not alive: +5")
+
+        if not self.owns_house:
+            points += 5
+            print("Points for not owning house: +5")
+
+        if self.marital_status == 'Ayrı':
+            points += 5
+            print("Points for marital status: +5")
+
+        mother_salary = self.mother_salary if self.mother_salary is not None else 0
+        father_salary = self.father_salary if self.father_salary is not None else 0
+        total_salary = mother_salary + father_salary
+        print(f"Total salary: {total_salary}")
+
+        if total_salary < 17000:
+            points += 20
+            print("Points for salary < 17000: +20")
+        elif total_salary < 35000:
+            points += 15
+            print("Points for salary < 35000: +15")
+        elif total_salary < 53000:
+            points += 10
+            print("Points for salary < 53000: +10")
+        elif total_salary < 67000:
+            points += 5
+            print("Points for salary < 67000: +5")
+
+        print(f"Total calculated points: {points}")
+        self.points = points
+        self.save()
+        print(f"Points saved: {self.points}")
+
+        return self.points
+
+    def __str__(self):
+        return self.name
