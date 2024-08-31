@@ -1,4 +1,7 @@
+import openpyxl
 from django.contrib import admin
+from django.http import HttpResponse
+
 from .models import Ogrenci, Kres, Sınıf
 from .forms import SınıfAdminForm  # Import the custom form for Sınıf
 
@@ -36,6 +39,29 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ('isim', 'tc_no', 'kres', 'adres', 'points_display')
     list_filter = ('kres',)  # Ya da tercih_edilen_okul
     search_fields = ('isim', 'tc_no', 'adres')
+    actions = ['export_to_excel']
+
+    def export_to_excel(self, request, queryset):
+        # Excel dosyasını oluştur
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Öğrenciler"
+
+        # Başlık satırlarını yaz
+        ws.append(['İsim', 'Puan', 'Kres'])
+
+        # Öğrenci verilerini yaz
+        for ogrenci in queryset:
+            kres_ismi = ogrenci.kres.kres_ismi if ogrenci.kres else 'Belirtilmemiş'
+            ws.append([ogrenci.isim, ogrenci.calculate_points(), kres_ismi])
+
+        # HTTPResponse ile dosyayı döndür
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename="ogrenciler.xlsx"'
+        wb.save(response)
+        return response
+
+    export_to_excel.short_description = 'Excel olarak dışa aktar'
 
     def points_display(self, obj):
         return obj.calculate_points()

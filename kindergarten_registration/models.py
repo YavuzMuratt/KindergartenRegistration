@@ -38,7 +38,7 @@ class Ogrenci(models.Model):
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
     kardes_sayisi = models.IntegerField(default=0, blank=True)
     tercih_edilen_okul = models.ForeignKey('Kres', on_delete=models.SET_NULL, null=True, blank=True)
-
+    kres = models.ForeignKey('Kres', related_name='students', on_delete=models.CASCADE, null=True, blank=True)
     # Parent 1 Info
     anne_isim = models.CharField(max_length=100, blank=True)
     anne_soyisim = models.CharField(max_length=100, blank=True)
@@ -63,8 +63,7 @@ class Ogrenci(models.Model):
     evlimi = models.BooleanField(default=True)
     ev_varmi = models.BooleanField(default=True)
 
-    # Foreign Key to Kindergarten
-    kres = models.ForeignKey('Kres', related_name='students', on_delete=models.CASCADE, null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.isim} - {self.tc_no}"

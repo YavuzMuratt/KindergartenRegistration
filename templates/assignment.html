@@ -1,3 +1,6 @@
+
+
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -93,64 +96,43 @@
             <form method="post">
                 {% csrf_token %}
                 <p>Aşağıdaki butona tıklayarak öğrencileri puanlarına göre atayın.</p>
+                {{ form.as_p }}
                 <button type="submit">Öğrencileri Ata</button>
             </form>
         </div>
 
-        {% if assigned_students %}
-            <div class="list-container">
-                <h2>Atanan Öğrenciler</h2>
-                <ul>
-                    {% for student in assigned_students %}
-                        <li>{{ student.isim }} {{ student.soyisim }} - Atandığı Şube: {{ student.kres.kres_ismi }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% else %}
-            <div class="list-container">
-                <h2>Atanan Öğrenciler</h2>
-                <p>Henüz hiçbir öğrenci atanmadı.</p>
-            </div>
-        {% endif %}
+        <div class="list-container">
+            <h2>Öğrenciler</h2>
+            <ul>
+                {% for student, points in students_with_points %}
+                    <li>{{ student.isim }} - Puan: {{ points }}</li>
+                {% empty %}
+                    <li>Hiç öğrenci bulunamadı.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-        {% if waiting_students %}
-            <div class="list-container">
-                <h2>Yedek Öğrenciler</h2>
-                <ul>
-                    {% for student in waiting_students %}
-                        <li>{{ student.isim }} {{ student.soyisim }} - Puan: {{ student.puan }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% else %}
-            <div class="list-container">
-                <h2>Yedek Öğrenciler</h2>
-                <p>Yedek listesinde öğrenci bulunmamaktadır.</p>
-            </div>
-        {% endif %}
+        <div class="list-container">
+            <h2>Anaokulları</h2>
+            <ul>
+                {% for kindergarten in kindergartens %}
+                    <li>{{ kindergarten.kres_ismi }} - Mevcut Öğrenciler: {{ kindergarten.student_count }}</li>
+                {% empty %}
+                    <li>Hiç anaokulu bulunamadı.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-        {% if disqualified_students %}
-            <div class="list-container">
-                <h2>Elenen Öğrenciler</h2>
-                <ul>
-                    {% for student in disqualified_students %}
-                        <li>{{ student.isim }} {{ student.soyisim }} - Neden: {{ student.disqualification_reason }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% else %}
-            <div class="list-container">
-                <h2>Elenen Öğrenciler</h2>
-                <p>Elenen öğrenci bulunmamaktadır.</p>
-            </div>
-        {% endif %}
-
-        {% if error_message %}
-            <div class="list-container">
-                <h2>Hata</h2>
-                <p class="status-failure">{{ error_message }}</p>
-            </div>
-        {% endif %}
+        <div class="list-container">
+            <h2>Elenen Öğrenciler</h2>
+            <ul>
+                {% for student in reserve_list %}
+                    <li>{{ student.isim }} - Neden: {{ student.disqualification_reason }}</li>
+                {% empty %}
+                    <li>Elendi öğrenci bulunamadı.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </body>
 </html>

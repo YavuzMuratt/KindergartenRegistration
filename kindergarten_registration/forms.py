@@ -92,3 +92,11 @@ class SınıfAdminForm(forms.ModelForm):
             self.fields['students'].queryset = Ogrenci.objects.filter(kres=self.instance.kres)
         else:
             self.fields['students'].queryset = Ogrenci.objects.none()
+
+
+
+class AssignmentForm(forms.Form):
+    submit = forms.CharField(widget=forms.HiddenInput(), initial='atama')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
