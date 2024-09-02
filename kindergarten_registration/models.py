@@ -89,6 +89,8 @@ class Ogrenci(models.Model):
             return "Elendi"
         if self.okul_tecrubesi == 'Devlet':
             points += 5
+        if not self.anne_meslek == '' and not self.anne_meslek == 'Çalışmıyor' and not self.anne_meslek == 'Ev Hanımı':
+            points +=2
         if 'Atakum Belediyesi' in self.anne_kurum or 'Atakum Belediyesi' in self.baba_kurum:
             points += 5
         if not self.anne_yasiyor:
