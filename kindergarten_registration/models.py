@@ -1,6 +1,6 @@
 from datetime import date
 from django.db import models
-from django.db.models import ManyToManyField
+
 from django.db.models.signals import post_save
 from django.utils import timezone
 from django.dispatch import receiver
@@ -26,6 +26,14 @@ class Ogrenci(models.Model):
 
     sinif = models.ForeignKey('Sınıf', related_name='sınıf_students', on_delete=models.SET_NULL, null=True, blank=True)
     elendi = models.BooleanField(default=False)
+    preferred_kindergarten_1 = models.ForeignKey(Kres, on_delete=models.SET_NULL, null=True,
+                                                 related_name='preferred_1')
+    preferred_kindergarten_2 = models.ForeignKey(Kres, on_delete=models.SET_NULL, null=True,
+                                                 related_name='preferred_2', blank=True)
+    preferred_kindergarten_3 = models.ForeignKey(Kres, on_delete=models.SET_NULL, null=True,
+                                                 related_name='preferred_3', blank=True)
+    preferred_kindergarten_4 = models.ForeignKey(Kres, on_delete=models.SET_NULL, null=True,
+                                                 related_name='preferred_4', blank=True)
 
     isim = models.CharField(max_length=100)
     soyisim = models.CharField(max_length=100,blank=True)
@@ -37,7 +45,7 @@ class Ogrenci(models.Model):
     okul_tecrubesi = models.CharField(max_length=10, default='None', blank=True)
     devlet_ozel = models.CharField(max_length=10, choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')], blank=True, null=True)
     kardes_sayisi = models.IntegerField(default=0, blank=True)
-    tercih_edilen_okul = models.ForeignKey('Kres', on_delete=models.SET_NULL, null=True, blank=True)
+
     kres = models.ForeignKey('Kres', related_name='students', on_delete=models.CASCADE, null=True, blank=True)
     # Parent 1 Info
     anne_isim = models.CharField(max_length=100, blank=True)

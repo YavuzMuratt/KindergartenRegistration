@@ -1,0 +1,31 @@
+<!-- student_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğrenci Listesi</title>
+</head>
+<body>
+    <h1>Öğrenci Listesi</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>İsim</th>
+                <th>Puan</th>
+                <th>Elendi</th>
+                <th>Atandığı Sınıf</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.points }}</td>
+                    <td>{{ student.disqualified }}</td>
+                    <td>{{ student.assigned_class }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

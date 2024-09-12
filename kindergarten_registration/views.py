@@ -1,77 +1,72 @@
 # views.py
-from datetime import datetime
+from .models import Ogrenci, Kres, Sınıf
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-
-from .forms import StudentForm, AssignmentForm
-from .models import Ogrenci, Kres
+class StudentListView(View):
+    def get(self, request):
+        students = Ogrenci.objects.order_by('-points', 'registration_date')
+        return render(request, 'student_list.html', {'students': students})
 
 
-@staff_member_required
-def atama(request):
-    students = Ogrenci.objects.filter(tuvalet_egitimi=True, elendi=False, kres__isnull=True)
-    reserve_list = []
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff  # Ensure the user is an admin
+class AssignmentView(LoginRequiredMixin, AdminRequiredMixin, View):
+    login_url = '/admin/login/'
 
-    students_with_points = []
-    for student in students:
-        points = student.calculate_points()
-        if points != "Elendi":
-            students_with_points.append((student, points))
+    def get(self, request):
+        return render(request, 'assignment.html')
 
-    students_with_points.sort(key=lambda x: x[1], reverse=True)
-    kindergartens = Kres.objects.all()
+    def post(self, request):
+        students = Ogrenci.objects.filter(disqualified=False, assigned_class__isnull=True).order_by('-points',
+                                                                                                    'registration_date')
 
-    if request.method == 'POST':
-        form = AssignmentForm(request.POST)
-        if form.is_valid():
-            # Atama işlemini yap
-            for student, _ in students_with_points:
-                yas = student.yas()
-                ilk_yari = student.dogum_tarihi.month <= 6
-                assigned = False
+        for student in students:
+            assigned = False
+            for preferred in ['preferred_kindergarten_1', 'preferred_kindergarten_2', 'preferred_kindergarten_3']:
+                kindergarten = getattr(student, preferred)
+                if kindergarten and self.assign_to_kindergarten(student, kindergarten):
+                    assigned = True
+                    break
 
-                # Try assigning to the student's preferred kindergarten (tercih_edilen_okul)
-                if student.tercih_edilen_okul:
-                    sinif = student.tercih_edilen_okul.kres_siniflar.filter(yas_grubu=yas, ilk_yari=ilk_yari).first()
-                    if sinif and sinif.bosluk_varmi():
-                        student.kres = student.tercih_edilen_okul
-                        student.sinif = sinif
-                        student.save()
-                        assigned = True
+            if not assigned:
+                messages.warning(request, f"Student {student.name} could not be assigned to any kindergarten.")
 
-                # If not assigned, try other available kindergartens
-                if not assigned:
-                    for kindergarten in kindergartens:
-                        sinif = kindergarten.kres_siniflar.filter(yas_grubu=yas, ilk_yari=ilk_yari).first()
-                        if sinif and sinif.bosluk_varmi():
-                            student.kres = kindergarten
-                            student.sinif = sinif
-                            student.save()
-                            assigned = True
-                            break
+        self.assign_students_to_classes()
+        messages.success(request, "All students have been successfully assigned.")
+        return redirect('assignment')
 
-                if not assigned:
-                    reserve_list.append(student)
+    def assign_to_kindergarten(self, student, kindergarten):
+        total_assigned = Ogrenci.objects.filter(assigned_class__kindergarten=kindergarten).count()
+        if total_assigned < kindergarten.student_limit:
+            self.assign_student_to_kindergarten(student, kindergarten)
+            return True
+        return False
 
-            for student in reserve_list:
-                student.yedekte = True
+    def assign_student_to_kindergarten(self, student, kindergarten):
+        classes = Sınıf.objects.filter(kindergarten=kindergarten)
+        if classes.exists():
+            student.assigned_class = classes.first()
+            student.save()
+
+    def assign_students_to_classes(self):
+        kindergartens = Kres.objects.all()
+        for kindergarten in kindergartens:
+            students = Ogrenci.objects.filter(assigned_class__kindergarten=kindergarten).order_by('birth_date')
+            classes = kindergarten.classes.all()
+
+            class_index = 0
+            for student in students:
+                assigned_class = classes[class_index]
+                student.assigned_class = assigned_class
                 student.save()
 
-            messages.success(request, 'Öğrenciler başarıyla atanmıştır.')
-            return redirect('atama')
-    else:
-        form = AssignmentForm()
+                if Ogrenci.objects.filter(assigned_class=assigned_class).count() >= assigned_class.limit:
+                    class_index += 1
+                    if class_index >= len(classes):
+                        break
 
-    context = {
-        'students_with_points': students_with_points,
-        'kindergartens': kindergartens,
-        'reserve_list': reserve_list,
-        'form': form,
-    }
-    return render(request, 'assignment.html', context)
 
 def show_kres(request):
     kresler = Kres.objects.all()  # Kres modelindeki tüm kayıtları al

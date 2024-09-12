@@ -19,11 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 from kindergarten_registration import views
 from django.http import HttpResponseRedirect
-from kindergarten_registration.views import atama
+from kindergarten_registration.views import AssignmentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.ogrenci_kayit, name='index'),  # Root URL shows the registration form
     path('success/', views.success, name='success'),  # Success page after registration
-    path('assignment/', atama, name='atama'),
+    path('assignment/', views.AssignmentView.as_view(), name='atama'),
 ]

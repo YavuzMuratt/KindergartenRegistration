@@ -12,15 +12,10 @@ class StudentForm(forms.ModelForm):
     ]
 
 
-    tercih_edilen_okul = forms.ModelChoiceField(
-        queryset=Kres.objects.all(),
-        required=False,
-        label="Tercih Edilen Anaokulu"
-    )
-
     class Meta:
         model = Ogrenci
-        fields = [
+        fields = ['preferred_kindergarten_1', 'preferred_kindergarten_2', 'preferred_kindergarten_3',
+                  'preferred_kindergarten_4',
             'isim', 'soyisim', 'tc_no', 'adres', 'tuvalet_egitimi', 'okul_tecrubesi', 'devlet_ozel',
             'kardes_sayisi', 'dogum_tarihi',
             'anne_isim', 'anne_soyisim', 'anne_telefon', 'anne_egitim', 'anne_meslek','anne_kurum', 'anne_yasiyor',
@@ -29,6 +24,10 @@ class StudentForm(forms.ModelForm):
             'baba_maas', 'evlimi', 'ev_varmi'
         ]
         widgets = {
+            'preferred_kindergarten_1': forms.Select(),
+            'preferred_kindergarten_2': forms.Select(),
+            'preferred_kindergarten_3': forms.Select(),
+            'preferred_kindergarten_4': forms.Select(),
             'dogum_tarihi': forms.DateInput(attrs={'type': 'date'}),
             'devlet_ozel': forms.Select(choices=[('Devlet', 'Devlet'), ('Özel', 'Özel')]),
             'tuvalet_egitimi': forms.CheckboxInput(),

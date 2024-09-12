@@ -48,12 +48,12 @@ class StudentAdmin(admin.ModelAdmin):
         ws.title = "Öğrenciler"
 
         # Başlık satırlarını yaz
-        ws.append(['İsim', 'Puan', 'Kres'])
+        ws.append(['İsim', 'Puan', 'Kres', ])
 
         # Öğrenci verilerini yaz
         for ogrenci in queryset:
             kres_ismi = ogrenci.kres.kres_ismi if ogrenci.kres else 'Belirtilmemiş'
-            ws.append([ogrenci.isim, ogrenci.calculate_points(), kres_ismi])
+            ws.append([ogrenci.isim,ogrenci.tc_no, ogrenci.calculate_points(), kres_ismi,ogrenci.anne_isim, ogrenci.anne_meslek,ogrenci.anne_egitim,ogrenci.baba_isim,ogrenci.baba_meslek])
 
         # HTTPResponse ile dosyayı döndür
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
